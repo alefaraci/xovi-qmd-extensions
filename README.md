@@ -179,7 +179,7 @@ quick-browse page-slider is up (a one-finger swipe up from the bottom edge).
 
 Adds four shortcut buttons to the homepage dock: **My Files**, **Favorites**, **Tags** and **Trash**, each jumping the file browser straight to that view in one tap. This extends the original [FouzR](https://github.com/FouzR)'s [`favTagButton.qmd`](https://github.com/FouzR/xovi-extensions/blob/main/3.27/favTagButton.qmd).
 
-| <img src="./assets/dock.png" width="475"> |
+| <img src="./assets/Dock.png" width="475"> |
 |:--:|
 
 ---
