@@ -1,0 +1,891 @@
+; Alessio Faraci (https://github.com/alefaraci)
+; Selection-menu button recipe from rmitchellscott's tocFromSelection.qmd; cross-doc + .rm-storage patterns from betterToc (GPL-3.0-only): https://github.com/rmitchellscott/xovi-qmd-extensions
+; SPDX-License-Identifier: GPL-3.0-only
+; Modified: 2026-06-21
+;
+; Requires: https://github.com/asivery/rm-xovi-extensions
+
+AFFECT [[11806562588218124596]]
+	TRAVERSE ?#[[6504254477]]
+	LOCATE AFTER ALL
+	INSERT {
+		readonly property string regRmHeader: "reMarkable .lines file, version=6          "
+		property var regLinks: []
+		property string regCurKey: (~&6504254477&~.document ? ~&6504254477&~.document.idForPage(~&6504254477&~.page) : "")
+		property int regSeq: 0
+		property bool regArmed: false
+		property real regPendingSx: 0
+		property real regPendingSy: 0
+		property string regPickSource: ""
+		property int regPickSourceNum: 0
+		property string regReturnTo: ""
+		property string regConfirmText: ""
+		property string regMenuId: ""
+		property string regEditId: ""
+		property bool regCrossActive: false
+		property bool regCrossReady: false
+		property int regReloadToken: 0
+		property string regCrossSrcDocId: ""
+		property int regCrossSrcPageNum: 0
+		property string regCrossSrcKey: ""
+		property real regCrossSrcSx: 0
+		property real regCrossSrcSy: 0
+		property string regDialogTitle: ""
+		property string regDialogMsg: ""
+		property string regDialogLinkId: ""
+		property string regBackText: ""
+		property var regBackTarget: null
+		property var regJumpPending: null
+		property int regJumpTries: 0
+
+		function regDocId() {
+			return (~&6504254477&~.document && ~&6504254477&~.document.id) ? ~&6504254477&~.document.id : "";
+		}
+		function regFilePath() {
+			var id = regDocId();
+			if (!id) return "";
+			return "file:///home/root/.local/share/remarkable/xochitl/" + id + "/rm-linkFromSelection.rm";
+		}
+		function regReload() {
+			var path = regFilePath();
+			if (!path) { ~&6504254477&~.regLinks = []; ~&6504254477&~.regSeq = 0; return; }
+			~&6504254477&~.regReloadToken = ~&6504254477&~.regReloadToken + 1;
+			var myToken = ~&6504254477&~.regReloadToken;
+			var req = new XMLHttpRequest();
+			req.open("GET", path);
+			req.onreadystatechange = function() {
+				if (req.readyState === XMLHttpRequest.DONE) {
+					if (myToken !== ~&6504254477&~.regReloadToken) return;
+					var arr = [];
+					try {
+						var t = req.responseText || "";
+						var j = t.indexOf("[");
+						if (j >= 0) arr = JSON.parse(t.substring(j));
+					} catch (e) { arr = []; }
+					~&6504254477&~.regLinks = Array.isArray(arr) ? arr : [];
+					var mx = 0;
+					for (var i = 0; i < ~&6504254477&~.regLinks.length; i++) {
+						var n = parseInt(String(~&6504254477&~.regLinks[i].id).replace("L", ""), 10);
+						if (!isNaN(n) && n > mx) mx = n;
+					}
+					~&6504254477&~.regSeq = mx;
+					~&6504254477&~.regConsumeCrossPending();
+				}
+			};
+			req.send();
+		}
+		function regPersist() {
+			var path = regFilePath();
+			if (!path) return;
+			var req = new XMLHttpRequest();
+			req.open("PUT", path);
+			req.send(regRmHeader + JSON.stringify(~&6504254477&~.regLinks));
+		}
+
+		function regSetPick(v) {
+			try { ~&254540341572282132&~.regLinkPickMode = v; }
+			catch (e) {  }
+		}
+		function regFindLinkAt(page, sx, sy) {
+			var tol = 5;
+			for (var i = 0; i < regLinks.length; i++) {
+				var l = regLinks[i];
+				if (l.page === page && Math.abs(l.sx - sx) < tol && Math.abs(l.sy - sy) < tol)
+					return l.id;
+			}
+			return "";
+		}
+		function regArmLink(sx, sy) {
+			regEditId = regFindLinkAt(regCurKey, sx, sy);
+			regPendingSx = sx;
+			regPendingSy = sy;
+			regPickSource = regCurKey;
+			regPickSourceNum = ~&6504254477&~.page + 1;
+			regArmed = true;
+			regArmTimer.restart();
+			regSelfCheckTimer.stop();
+			regSetPick(true);
+			~&6504254477&~.toolbar.~&6650786433440202278&~();
+		}
+		function regArmLinkCross(sx, sy, editId) {
+			regDisarm();
+			~&254540341572282132&~.regCrossPick = {
+				srcDocId: regDocId(),
+				srcPageKey: regCurKey,
+				srcPageNum: ~&6504254477&~.page + 1,
+				srcDocName: (~&6504254477&~.document ? ~&6504254477&~.document.~&505890565057603928&~ : ""),
+				sx: sx,
+				sy: sy,
+				editId: editId ? editId : regFindLinkAt(regCurKey, sx, sy),
+				phase: "browse",
+				ts: new Date().getTime()
+			};
+			if (typeof ~&6504254477&~.closeGesture === "function") { ~&6504254477&~.closeGesture();  return; }
+		}
+		function regMaybeEnterCrossPick() {
+			if (!~&6504254477&~.document) return;
+			var p = ~&254540341572282132&~.regCrossPick;
+			if (!p || p.phase !== "browse") return;
+			if (p.ts && (new Date().getTime() - p.ts) > 120000) { ~&254540341572282132&~.regCrossPick = null;  return; }
+			if (regDocId() === p.srcDocId) {
+				~&254540341572282132&~.regCrossPick = null;
+				regNotify("Cannot link a document to itself. Choose another");
+				return;
+			}
+			regCrossSrcDocId = p.srcDocId;
+			regCrossSrcPageNum = p.srcPageNum;
+			regCrossSrcKey = p.srcPageKey;
+			regCrossSrcSx = p.sx;
+			regCrossSrcSy = p.sy;
+			regCrossActive = true;
+			regCrossReady = false;
+			regCrossArmTimer.restart();
+			~&254540341572282132&~.regCrossPick = {
+				srcDocId: p.srcDocId, srcPageKey: p.srcPageKey, srcPageNum: p.srcPageNum,
+				sx: p.sx, sy: p.sy, editId: p.editId, srcDocName: p.srcDocName, phase: "page"
+			};
+			~&6504254477&~.toolbar.~&6650786433440202278&~();
+		}
+		function regCommitCross() {
+			if (!regCrossActive) return;
+			if (!regCrossReady) { regCrossCommitTimer.restart(); return; }
+			var tgt = regCurKey;
+			if (!tgt || !regResolves(tgt)) {  return; }
+			var p = ~&254540341572282132&~.regCrossPick;
+			var tgtName = (~&6504254477&~.document ? ~&6504254477&~.document.~&505890565057603928&~ : "");
+			var srcName = (p && p.srcDocName) ? p.srcDocName : "document";
+			var msg = ((p && p.editId) ? "Re-linked " : "Linked ") + (tgtName || "document") + " to " + srcName;
+			~&254540341572282132&~.regCrossPending = {
+				srcDocId: regCrossSrcDocId,
+				srcPageKey: regCrossSrcKey,
+				sx: regCrossSrcSx,
+				sy: regCrossSrcSy,
+				editId: (p && p.editId) ? p.editId : "",
+				targetDoc: regDocId(),
+				targetDocName: tgtName,
+				targetPageKey: tgt,
+				notifMsg: msg
+			};
+			regCrossActive = false;
+			regCrossReady = false;
+			~&254540341572282132&~.regCrossPick = null;
+			regNotify(msg);
+			regCrossReturnTimer.restart();
+		}
+		function regCancelCross() {
+			var srcDoc = regCrossSrcDocId;
+			var srcNum = regCrossSrcPageNum;
+			regCrossActive = false;
+			regCrossReady = false;
+			~&254540341572282132&~.regCrossPick = null;
+			if (srcDoc) {
+				var e = ~&233694067165438&~.~&8399431778896295215&~(srcDoc);
+				if (e) ~&254540341572282132&~.~&9497240032101537789&~(e, srcNum - 1);
+			}
+		}
+		function regConsumeCrossPending() {
+			var c = ~&254540341572282132&~.regCrossPending;
+			if (!c) return;
+			if (c.srcDocId !== regDocId()) return;
+			~&254540341572282132&~.regCrossPending = null;
+			var matched = false;
+			if (c.editId && c.editId !== "") {
+				var eid = c.editId;
+				regLinks = regLinks.map(function(l) {
+					if (l.id !== eid) return l;
+					matched = true;
+					return { id: l.id, sx: l.sx, sy: l.sy, page: l.page, target: "", targetDoc: c.targetDoc, targetDocName: c.targetDocName, targetPageKey: c.targetPageKey };
+				});
+				if (matched) {
+					regPersist();
+					regReloadToken = regReloadToken + 1;
+					regReturnTo = "";
+					regReturnTimer.restart();
+					return;
+				}
+			}
+			regSeq = regSeq + 1;
+			var id = "L" + regSeq;
+			regLinks = regLinks.concat([{ id: id, sx: c.sx, sy: c.sy, page: c.srcPageKey, target: "", targetDoc: c.targetDoc, targetDocName: c.targetDocName, targetPageKey: c.targetPageKey }]);
+			regPersist();
+			regReloadToken = regReloadToken + 1;
+			regReturnTo = "";
+			regReturnTimer.restart();
+		}
+		function regGoToCross(link) {
+			if (!link || !link.targetDoc) return;
+			var e = ~&233694067165438&~.~&8399431778896295215&~(link.targetDoc);
+			if (!e) { regShowDialog("Document not found", "The linked document has been deleted.", link.id); return; }
+			if (e.~&7712810854541167&~) { regShowDialog("Document not downloaded", "Open it once on this device, then try again.", ""); return; }
+			~&254540341572282132&~.regCrossJump = {
+				targetPageKey: link.targetPageKey,
+				linkId: link.id,
+				back: { docId: regDocId(), pageKey: regCurKey, docName: (~&6504254477&~.document ? ~&6504254477&~.document.~&505890565057603928&~ : "") }
+			};
+			~&254540341572282132&~.~&9497240032101537789&~(e, 0);
+		}
+		function regConsumeCrossJump() {
+			if (!~&6504254477&~.document) return;
+			var j = ~&254540341572282132&~.regCrossJump;
+			if (!j) return;
+			~&254540341572282132&~.regCrossJump = null;
+			regJumpPending = { key: j.targetPageKey, back: j.back, linkId: j.linkId };
+			regJumpTries = 0;
+			regJumpTimer.restart();
+		}
+		function regTryJump() {
+			var j = regJumpPending;
+			if (!j) return;
+			if (!~&6504254477&~.document) { regJumpPending = null; return; }
+			var idx = -1;
+			try { idx = ~&6504254477&~.document.pageForId(j.key); } catch (e1) { idx = -1; }
+			if (typeof idx === "number" && idx >= 0) {
+				regJumpPending = null;
+				try { ~&6504254477&~.openPage(idx, ~&14175747548438644067&~.~&10593835380864769165&~.~&7442916920529273295&~); }
+				catch (e2) { ~&6504254477&~.goToPageId(j.key); }
+				if (j.back) ~&6504254477&~.regShowBackNotif(j.back);
+				return;
+			}
+			if ((~&6504254477&~.document.pageCount > 0) || regJumpTries >= 8) {
+				regJumpPending = null;
+				if (j.back && j.back.docId) {
+					~&254540341572282132&~.regCrossError = { title: "Page not found", msg: "The linked page has been deleted.", linkId: j.linkId };
+					~&254540341572282132&~.regCrossJump = { targetPageKey: j.back.pageKey, linkId: "", back: null };
+					var be = ~&233694067165438&~.~&8399431778896295215&~(j.back.docId);
+					if (be) ~&254540341572282132&~.~&9497240032101537789&~(be, 0);
+				}
+				return;
+			}
+			regJumpTries = regJumpTries + 1;
+			regJumpTimer.restart();
+		}
+		function regShowDialog(title, msg, linkId) {
+			regDialogTitle = title;
+			regDialogMsg = msg;
+			regDialogLinkId = linkId ? linkId : "";
+		}
+		function regConsumeCrossError() {
+			if (!~&6504254477&~.document) return;
+			var er = ~&254540341572282132&~.regCrossError;
+			if (!er) return;
+			~&254540341572282132&~.regCrossError = null;
+			regShowDialog(er.title, er.msg, er.linkId);
+		}
+		function regShowBackNotif(back) {
+			if (typeof ~&16765420033347753489&~ === "function") {
+				try {
+					~&16765420033347753489&~({
+						~&233736549263054&~: "Linked from " + (back.docName || "document"),
+						~&7082453764199&~: "Back",
+						~&254542236275632405&~: function() {
+							var e = ~&233694067165438&~.~&8399431778896295215&~(back.docId);
+							if (e) { ~&254540341572282132&~.regCrossJump = { targetPageKey: back.pageKey, linkId: "", back: null }; ~&254540341572282132&~.~&9497240032101537789&~(e, 0); }
+						}
+					});
+					return;
+				} catch (e1) {  }
+			}
+			~&6504254477&~.regBackTarget = back;
+			~&6504254477&~.regBackText = "Linked from " + (back.docName || "document");
+			regBackTimer.restart();
+		}
+		function regNotify(message) {
+			if (typeof ~&16765420033347753489&~ === "function") {
+				try { ~&16765420033347753489&~({ ~&233736549263054&~: message });  return; }
+				catch (e1) {  }
+			}
+			regConfirmText = message;
+			regReturnTimer.restart();
+		}
+		function regCreateLink(tgt) {
+			if (regEditId !== "") {
+				var eid = regEditId;
+				regLinks = regLinks.map(function(l) { return l.id === eid ? { id: l.id, sx: l.sx, sy: l.sy, page: l.page, target: tgt } : l; });
+				regEditId = "";
+				regPersist();
+				return;
+			}
+			regSeq = regSeq + 1;
+			var id = "L" + regSeq;
+			regLinks = regLinks.concat([{ id: id, sx: regPendingSx, sy: regPendingSy, page: regPickSource, target: tgt }]);
+			regPersist();
+		}
+		function regEditLink(id) {
+			regMenuId = "";
+			var lk = null;
+			for (var i = 0; i < regLinks.length; i++) { if (regLinks[i].id === id) { lk = regLinks[i]; break; } }
+			if (!lk) return;
+			if (lk.targetDoc) {
+				regArmLinkCross(lk.sx, lk.sy, id);
+				return;
+			}
+			regArmLink(lk.sx, lk.sy);
+			regEditId = id;
+		}
+		function regDeleteLink(id) {
+			regMenuId = "";
+			regLinks = regLinks.filter(function(l) { return l.id !== id; });
+			regPersist();
+		}
+		function regCancelLink() {
+			var src = regPickSource;
+			regArmTimer.stop();
+			regSelfCheckTimer.stop();
+			regArmed = false;
+			regPickSource = "";
+			regEditId = "";
+			regSetPick(false);
+			if (src) regGoTo(src);
+		}
+		function regDisarm() {
+			regArmTimer.stop();
+			regSelfCheckTimer.stop();
+			regArmed = false;
+			regPickSource = "";
+			regEditId = "";
+			regMenuId = "";
+			regCrossActive = false;
+			regCrossReady = false;
+			regSetPick(false);
+		}
+
+		function regResolves(key) {
+			var d = ~&6504254477&~.document;
+			if (!d || !key) return false;
+			try {
+				var i = d.pageForId(key);
+				return (typeof i === "number" && i >= 0 && d.idForPage(i) === key);
+			} catch (e) { return true; }
+		}
+		function regGoTo(key) {
+			if (!key) return;
+			var v = ~&6504254477&~;
+			var d = v.document;
+			if (!d || !regResolves(key)) return;
+			var idx = -1;
+			try { idx = d.pageForId(key); } catch (e) { idx = -1; }
+			if (typeof idx === "number" && idx >= 0) {
+				try { v.openPage(idx, ~&14175747548438644067&~.~&10593835380864769165&~.~&7442916920529273295&~);  return; }
+				catch (e1) {  }
+			}
+			v.goToPageId(key);
+		}
+		onRegCurKeyChanged: {
+			if (regArmed && regCurKey !== "" && regCurKey !== regPickSource && regResolves(regCurKey)) {
+				var tgt = regCurKey;
+				var src = regPickSource;
+				var srcNum = regPickSourceNum;
+				regCreateLink(tgt);
+				regArmTimer.stop();
+				regSelfCheckTimer.stop();
+				regArmed = false;
+				regPickSource = "";
+				regSetPick(false);
+				regReturnTo = src;
+				regNotify("Linked page " + srcNum + " to page " + (~&6504254477&~.page + 1));
+				regReturnTimer.restart();
+			}
+		}
+		onDocumentChanged: { regDisarm(); regReload(); regMaybeEnterCrossPick(); regConsumeCrossJump(); regConsumeCrossError(); }
+		Component.onCompleted: { regReload(); regMaybeEnterCrossPick(); regConsumeCrossJump(); regConsumeCrossError(); }
+
+		Item {
+			id: regLinkLayer
+			parent: ~&6504254477&~.uiOverlay
+			anchors.fill: parent
+			z: 100000
+
+				Connections {
+					target: ~&254540341572282132&~
+					onRegLinkPickModeChanged: {
+						if (~&254540341572282132&~ && !~&254540341572282132&~.regLinkPickMode && ~&6504254477&~.regArmed)
+							~&6504254477&~.regCancelLink();
+					}
+				}
+
+				Connections {
+					target: ~&254540341572282132&~
+					onRegOverviewClosedChanged: {
+						if (~&6504254477&~.regArmed) regSelfCheckTimer.restart();
+					}
+				}
+
+				Timer {
+					id: regSelfCheckTimer
+					interval: 600
+					repeat: false
+					onTriggered: {
+						if (~&6504254477&~.regArmed && ~&6504254477&~.regCurKey === ~&6504254477&~.regPickSource) {
+							~&6504254477&~.regReturnTo = "";
+							~&6504254477&~.regNotify("Cannot link a page to itself. Choose another");
+							regReturnTimer.restart();
+							~&6504254477&~.regDisarm();
+						}
+					}
+				}
+
+				Timer {
+					id: regArmTimer
+					interval: 30000
+					repeat: false
+					onTriggered: ~&6504254477&~.regDisarm()
+				}
+
+				Timer {
+					id: regReturnTimer
+					interval: 1750
+					repeat: false
+					onTriggered: {
+						if (~&6504254477&~.regReturnTo) {
+							~&6504254477&~.regGoTo(~&6504254477&~.regReturnTo);
+							~&6504254477&~.regReturnTo = "";
+						}
+						regBarTimer.restart();
+					}
+				}
+
+				Timer {
+					id: regBarTimer
+					interval: 1750
+					repeat: false
+					onTriggered: ~&6504254477&~.regConfirmText = ""
+				}
+
+				Connections {
+					target: ~&254540341572282132&~
+					onRegCrossCancelChanged: {
+						if (~&6504254477&~.regCrossActive) ~&6504254477&~.regCancelCross();
+					}
+				}
+
+				Connections {
+					target: ~&254540341572282132&~
+					onRegOverviewClosedChanged: {
+						if (~&6504254477&~.regCrossActive) regCrossCommitTimer.restart();
+					}
+				}
+
+				Timer {
+					id: regCrossCommitTimer
+					interval: 400
+					repeat: false
+					onTriggered: ~&6504254477&~.regCommitCross()
+				}
+
+				Timer {
+					id: regCrossArmTimer
+					interval: 120
+					repeat: false
+					onTriggered: ~&6504254477&~.regCrossReady = true
+				}
+
+				Rectangle {
+					id: regBackBar
+					visible: ~&6504254477&~.regBackText !== ""
+					z: 100004
+					anchors.bottom: parent.bottom
+					anchors.left: parent.left
+					anchors.right: parent.right
+					height: 115
+					color: "#000000"
+					Text {
+						anchors.left: parent.left
+						anchors.leftMargin: 40
+						anchors.verticalCenter: parent.verticalCenter
+						text: ~&6504254477&~.regBackText
+						color: "#FFFFFF"
+						font.pixelSize: 30
+						font.bold: true
+					}
+					Rectangle {
+						anchors.right: parent.right
+						anchors.rightMargin: 24
+						anchors.verticalCenter: parent.verticalCenter
+						width: 160
+						height: 70
+						color: "#FFFFFF"
+						Text { anchors.centerIn: parent; text: "Back"; color: "#000000"; font.pixelSize: 28; font.bold: true }
+						MouseArea {
+							anchors.fill: parent
+							onClicked: {
+								var b = ~&6504254477&~.regBackTarget;
+								~&6504254477&~.regBackText = "";
+								regBackTimer.stop();
+								if (b && b.docId) {
+									~&254540341572282132&~.regCrossJump = { targetPageKey: b.pageKey, linkId: "", back: null };
+									var be = ~&233694067165438&~.~&8399431778896295215&~(b.docId);
+									if (be) ~&254540341572282132&~.~&9497240032101537789&~(be, 0);
+								}
+							}
+						}
+					}
+				}
+
+				Timer {
+					id: regBackTimer
+					interval: 5000
+					repeat: false
+					onTriggered: ~&6504254477&~.regBackText = ""
+				}
+
+				Timer {
+					id: regJumpTimer
+					interval: 150
+					repeat: false
+					onTriggered: ~&6504254477&~.regTryJump()
+				}
+
+				Timer {
+					id: regCrossReturnTimer
+					interval: 1750
+					repeat: false
+					onTriggered: {
+						var e = ~&233694067165438&~.~&8399431778896295215&~(~&6504254477&~.regCrossSrcDocId);
+						if (e) ~&254540341572282132&~.~&9497240032101537789&~(e, ~&6504254477&~.regCrossSrcPageNum - 1);
+					}
+				}
+
+				Rectangle {
+					id: regConfirmBar
+					visible: ~&6504254477&~.regConfirmText !== ""
+					z: 100003
+					anchors.top: parent.top
+					anchors.left: parent.left
+					anchors.right: parent.right
+					height: 115
+					color: "#000000"
+					Text {
+						anchors.centerIn: parent
+						text: ~&6504254477&~.regConfirmText
+						color: "#FFFFFF"
+						font.pixelSize: 30
+						font.bold: true
+					}
+				}
+
+				Rectangle {
+					id: regDialog
+					visible: ~&6504254477&~.regDialogTitle !== ""
+					z: 100020
+					anchors.top: parent.top
+					anchors.left: parent.left
+					anchors.right: parent.right
+					height: 520
+					color: "#000000"
+					Text {
+						id: regDialogTitleText
+						anchors.left: parent.left
+						anchors.leftMargin: 60
+						anchors.top: parent.top
+						anchors.topMargin: 90
+						text: ~&6504254477&~.regDialogTitle
+						color: "#FFFFFF"
+						font.pixelSize: 56
+					}
+					Text {
+						anchors.left: parent.left
+						anchors.leftMargin: 60
+						anchors.top: regDialogTitleText.bottom
+						anchors.topMargin: 30
+						text: ~&6504254477&~.regDialogMsg
+						color: "#FFFFFF"
+						font.pixelSize: 30
+					}
+					Row {
+						anchors.left: parent.left
+						anchors.leftMargin: 60
+						anchors.bottom: parent.bottom
+						anchors.bottomMargin: 90
+						spacing: 30
+						Rectangle {
+							width: 300
+							height: 90
+							color: "#FFFFFF"
+							Text { anchors.centerIn: parent; text: "Cancel"; color: "#000000"; font.pixelSize: 30 }
+							MouseArea {
+								anchors.fill: parent
+								onClicked: { ~&6504254477&~.regDialogTitle = ""; ~&6504254477&~.regDialogMsg = ""; ~&6504254477&~.regDialogLinkId = ""; }
+							}
+						}
+						Rectangle {
+							width: 300
+							height: 90
+							color: "#000000"
+							border.color: "#FFFFFF"
+							border.width: 2
+							Text { anchors.centerIn: parent; text: "Delete entry"; color: "#FFFFFF"; font.pixelSize: 30 }
+							MouseArea {
+								anchors.fill: parent
+								onClicked: {
+									if (~&6504254477&~.regDialogLinkId !== "") ~&6504254477&~.regDeleteLink(~&6504254477&~.regDialogLinkId);
+									~&6504254477&~.regDialogTitle = ""; ~&6504254477&~.regDialogMsg = ""; ~&6504254477&~.regDialogLinkId = "";
+								}
+							}
+						}
+					}
+				}
+
+			Repeater {
+				model: ~&6504254477&~.regLinks
+				delegate: Item {
+					id: regMark
+					visible: modelData.page === ~&6504254477&~.regCurKey && ~&6504254477&~.sceneView && !~&6504254477&~.sceneView.awaitingInitialTileSet && (~&6504254477&~.document ? ~&6504254477&~.document.pageCount : 0) >= 0 && (modelData.targetDoc ? true : (!modelData.target || ~&6504254477&~.regResolves(modelData.target)))
+					opacity: modelData.targetDoc ? (~&233694067165438&~.~&8399431778896295215&~(modelData.targetDoc) ? 1.0 : 0.4) : (modelData.target ? 1.0 : 0.5)
+					property point regViewPt: {
+						var _a = ~&6504254477&~.leftViewportEdge;
+						var _b = ~&6504254477&~.topViewportEdge;
+						var _c = ~&6504254477&~.viewScale;
+						var _d = ~&6504254477&~.regCurKey;
+						return ~&6504254477&~.sceneToView(~&5971598&~.~&214638019283&~(modelData.sx, modelData.sy));
+					}
+					property real regZoom: {
+						var _ = regViewPt;
+						var ds = ~&6504254477&~.defaultScale;
+						var tm = ~&6504254477&~.tileManager;
+						if (ds && ds > 0 && tm && tm.scale > 0)
+							return tm.scale / ds;
+						var pa = ~&6504254477&~.sceneToView(~&5971598&~.~&214638019283&~(0, 0));
+						var pb = ~&6504254477&~.sceneToView(~&5971598&~.~&214638019283&~(1000, 0));
+						var d = pb.x - pa.x;
+						return d > 0 ? (d / 1000) : 1;
+					}
+					width: 64 * regZoom
+					height: 64 * regZoom
+					x: regViewPt.x + 16 * regZoom
+					y: regViewPt.y - height / 2
+
+					Rectangle {
+						anchors.fill: parent
+						color: "transparent"
+					}
+					Image {
+						anchors.centerIn: parent
+						width: 48 * regZoom
+						height: 48 * regZoom
+						sourceSize.width: Math.round(48 * regZoom)
+						sourceSize.height: Math.round(48 * regZoom)
+						smooth: true
+						source: modelData.targetDoc ? "qrc:/ark/icons/link" : "qrc:/ark/icons/page_hashtag"
+					}
+					MouseArea {
+						id: regDiscMouse
+						anchors.fill: parent
+						property bool regLongFired: false
+						onPressed: { regDiscMouse.regLongFired = false; regHoldTimer.restart(); }
+						onReleased: regHoldTimer.stop()
+						onCanceled: regHoldTimer.stop()
+						onClicked: { if (!regDiscMouse.regLongFired) { if (modelData.targetDoc) ~&6504254477&~.regGoToCross(modelData); else if (modelData.target) ~&6504254477&~.regGoTo(modelData.target); } }
+						Timer {
+							id: regHoldTimer
+							interval: 700
+							repeat: false
+							onTriggered: { regDiscMouse.regLongFired = true; ~&6504254477&~.regMenuId = modelData.id; }
+						}
+					}
+				}
+			}
+
+			Item {
+				id: regMenuLayer
+				anchors.fill: parent
+				visible: ~&6504254477&~.regMenuId !== "" && regMenuLayer.regMLink !== null && regMenuLayer.regMLink.page === ~&6504254477&~.regCurKey
+				z: 100010
+
+				property var regMLink: {
+					var _m = ~&6504254477&~.regMenuId;
+					var arr = ~&6504254477&~.regLinks;
+					for (var i = 0; i < arr.length; i++) { if (arr[i].id === _m) return arr[i]; }
+					return null;
+				}
+				property point regMPt: {
+					var _a = ~&6504254477&~.leftViewportEdge;
+					var _b = ~&6504254477&~.topViewportEdge;
+					var _c = ~&6504254477&~.viewScale;
+					var lk = regMLink;
+					if (!lk) return ~&5971598&~.~&214638019283&~(0, 0);
+					return ~&6504254477&~.sceneToView(~&5971598&~.~&214638019283&~(lk.sx, lk.sy));
+				}
+				property real regMZoom: {
+					var _a = ~&6504254477&~.leftViewportEdge;
+					var _b = ~&6504254477&~.topViewportEdge;
+					var _c = ~&6504254477&~.viewScale;
+					var ds = ~&6504254477&~.defaultScale;
+					var tm = ~&6504254477&~.tileManager;
+					if (ds && ds > 0 && tm && tm.scale > 0)
+						return tm.scale / ds;
+					var pa = ~&6504254477&~.sceneToView(~&5971598&~.~&214638019283&~(0, 0));
+					var pb = ~&6504254477&~.sceneToView(~&5971598&~.~&214638019283&~(1000, 0));
+					var d = pb.x - pa.x;
+					return d > 0 ? (d / 1000) : 1;
+				}
+
+				MouseArea {
+					anchors.fill: parent
+					onClicked: ~&6504254477&~.regMenuId = ""
+				}
+
+				Rectangle {
+					id: regMenuBar
+					visible: regMenuLayer.regMLink !== null
+					color: "#FFFFFF"
+					border.color: "#000000"
+					border.width: 2
+					radius: 0
+					width: regMenuRow.width + 28
+					height: regMenuRow.height + 20
+					x: Math.max(8, Math.min(regMenuLayer.width - width - 8, regMenuLayer.regMPt.x + 48 * regMenuLayer.regMZoom - width / 2))
+					y: Math.max(8, Math.min(regMenuLayer.height - height - 8, regMenuLayer.regMPt.y + 32 * regMenuLayer.regMZoom + 14))
+
+					Row {
+						id: regMenuRow
+						anchors.centerIn: parent
+						spacing: 20
+						Item {
+							width: 60
+							height: 60
+							Image {
+								anchors.centerIn: parent
+								width: 52
+								height: 52
+								sourceSize.width: 52
+								sourceSize.height: 52
+								smooth: true
+								source: "qrc:/ark/icons/dots_three_vertical"
+							}
+							MouseArea {
+								anchors.fill: parent
+								onClicked: ~&6504254477&~.regEditLink(regMenuLayer.regMLink ? regMenuLayer.regMLink.id : "")
+							}
+						}
+						Item {
+							width: 60
+							height: 60
+							Image {
+								anchors.centerIn: parent
+								width: 52
+								height: 52
+								sourceSize.width: 52
+								sourceSize.height: 52
+								smooth: true
+								source: "qrc:/ark/icons/trashcan"
+							}
+							MouseArea {
+								anchors.fill: parent
+								onClicked: ~&6504254477&~.regDeleteLink(regMenuLayer.regMLink ? regMenuLayer.regMLink.id : "")
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	END TRAVERSE
+	TRAVERSE ?#[[18399528329672988301]]
+	LOCATE AFTER ALL
+	INSERT {
+		onRegLinkAdd: {
+			var r = ~&18399528329672988301&~.sceneSelectionRect;
+			~&6504254477&~.regArmLink(r.x + r.width, r.y + r.height / 2);
+		}
+		onRegLinkAddCross: {
+			var r = ~&18399528329672988301&~.sceneSelectionRect;
+			~&6504254477&~.regArmLinkCross(r.x + r.width, r.y + r.height / 2, "");
+		}
+	}
+	END TRAVERSE
+END AFFECT
+AFFECT [[3197972396468700595]]
+	TRAVERSE ?#[[10742505294233322867]]
+	LOCATE BEFORE [[197082485]]
+	INSERT {
+		signal regLinkAdd
+		signal regLinkAddCross
+	}
+	END TRAVERSE
+	TRAVERSE ?#[[214642769434]]
+		LOCATE BEFORE [[425121728314878811.16765000136167945189.7081261925573]]#[[3012293087768835154]]
+		INSERT {
+			~&425121728314878811&~.~&16765000136167945189&~.~&7081261925573&~ {
+				~&5972374&~: regLinkAddBtn
+				~&481641799955318521&~: ~&5971598&~.~&233696851602406&~
+				~&6504337259&~: ~&214642769434&~.~&6504337259&~
+				~&8399601734642709923&~: "qrc:/ark/icons/page_hashtag"
+				~&254542236275632405&~: ~&10742505294233322867&~.regLinkAdd()
+			}
+			~&425121728314878811&~.~&16765000136167945189&~.~&7081261925573&~ {
+				~&5972374&~: regLinkAddCrossBtn
+				~&481641799955318521&~: ~&5971598&~.~&233696851602406&~
+				~&6504337259&~: ~&214642769434&~.~&6504337259&~
+				~&8399601734642709923&~: ~&"15094524446771853950&~
+				~&254542236275632405&~: ~&10742505294233322867&~.regLinkAddCross()
+			}
+		}
+	END TRAVERSE
+END AFFECT
+AFFECT [[8850026134298937527]]
+	TRAVERSE [[8397993708429497603]]
+	LOCATE BEFORE ALL
+	INSERT {
+		property bool regLinkPickMode: false
+		property int regOverviewClosed: 0
+		property var regCrossPick: null
+		property var regCrossPending: null
+		property var regCrossJump: null
+		property var regCrossError: null
+		property int regCrossCancel: 0
+	}
+	LOCATE AFTER [[1046376476496319351]]#[[18307259815317701968]]
+	INSERT {
+		~&1046376476496319351&~ {
+			~&5972374&~: regCrossPickHeader
+			~&233748328658231&~: ~&254540341572282132&~.regCrossPick !== null && ~&254540341572282132&~.regCrossPick.phase === "browse"
+			~&214646099849&~: ~&7083038346995&~.~&214646099849&~
+			~&214642559243&~: ~&6504222003&~("Select a document to link")
+			~&8561446866773398043&~: {
+				var p = ~&254540341572282132&~.regCrossPick;
+				~&254540341572282132&~.regCrossPick = null;
+				try { if (p && p.srcDocId) { var e = ~&233694067165438&~.~&8399431778896295215&~(p.srcDocId); if (e) ~&254540341572282132&~.~&9497240032101537789&~(e, p.srcPageNum - 1); } }
+				catch (err) {  }
+			}
+		}
+	}
+	END TRAVERSE
+END AFFECT
+AFFECT [[4530443761526121003]]
+	TRAVERSE [[8397788359424131273]]
+	LOCATE AFTER ALL
+	INSERT {
+		~&425121728314878811&~.~&254477135848310940&~ {
+			~&5972374&~: regLinkPickHeader
+			~&233748328658231&~: ~&254540341572282132&~.regLinkPickMode || (~&254540341572282132&~.regCrossPick !== null && ~&254540341572282132&~.regCrossPick.phase === "page")
+			~&214646099849&~: ~&7083038346995&~.~&214646099849&~
+			~&180995&~: 50
+			~&214642559243&~: "Tap a page to link"
+			~&15212200941981406061&~: [
+				~&425121728314878811&~.~&254477135848310940&~.~&7081261925573&~ {
+					~&6504315758&~: ~&6504222003&~(~&"7081277108079&~)
+					~&254542236275632405&~: { if (~&254540341572282132&~.regCrossPick !== null) ~&254540341572282132&~.regCrossCancel = ~&254540341572282132&~.regCrossCancel + 1; else ~&254540341572282132&~.regLinkPickMode = false; }
+				},
+				~&6502786168&~ { ~&7081629735527&~.~&254529418434902000&~: ~&6504329801&~ },
+				~&425121728314878811&~.~&254477135848310940&~.~&7081261925573&~ {
+					~&8399601734642709923&~: ~&"15094524446771854124&~
+					~&254542236275632405&~: ~&13155146558357480555&~.~&7082453764421&~ = !~&13155146558357480555&~.~&7082453764421&~
+				}
+			]
+		}
+		Connections {
+			target: ~&254540341572282132&~
+			onRegLinkPickModeChanged: {
+				if (~&254540341572282132&~.regLinkPickMode) ~&13155146558357480555&~.~&7082453764421&~ = ~&214625660372&~;
+			}
+		}
+		Connections {
+			target: ~&214637513689&~
+			function ~&13733777459642361598&~() {
+				if (!~&214637513689&~.~&233748328658231&~ && (~&254540341572282132&~.regLinkPickMode || (~&254540341572282132&~.regCrossPick !== null && ~&254540341572282132&~.regCrossPick.phase === "page")))
+					~&254540341572282132&~.regOverviewClosed = ~&254540341572282132&~.regOverviewClosed + 1;
+			}
+		}
+	}
+	END TRAVERSE
+END AFFECT

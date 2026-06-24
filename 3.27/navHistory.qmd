@@ -1,0 +1,223 @@
+; Alessio Faraci (https://github.com/alefaraci)
+; SPDX-License-Identifier: GPL-3.0-only
+; Modified: 2026-06-19
+;
+; Requires: https://github.com/asivery/rm-xovi-extensions
+
+AFFECT [[1224665461898798997]]
+	TRAVERSE [[8397993708429497603]]#[[6504254477]]
+		LOCATE AFTER ALL
+		INSERT {
+			Item {
+				~&5972374&~: regNavHist
+				property var backArr: []
+				property var fwdArr: []
+				property int backLen: 0
+				property int fwdLen: 0
+				property string prevKey: ""
+				property bool navigating: false
+				property string curKey: {
+					var d = ~&254547437090201330&~.~&7712934851008712&~;
+					var p = ~&254547437090201330&~.~&6504167078&~;
+					if (!d || p < 0) return "";
+					var k = d.~&254533375641282938&~(p);
+					return k ? k : "";
+				}
+				function resolveIdx(key) {
+					var d = ~&254547437090201330&~.~&7712934851008712&~;
+					if (!d || !key) return -1;
+					try {
+						var i = d.~&254543134822321786&~(key);
+						if (typeof i === "number" && i >= 0 && d.~&254533375641282938&~(i) === key) return i;
+						return -1;
+					} catch (e) { return -1; }
+				}
+				function resolves(key) { return regNavHist.resolveIdx(key) >= 0; }
+				function validCount(arr) { var n = 0; for (var i = 0; i < arr.length; i++) if (regNavHist.resolves(arr[i])) n++; return n; }
+				function peekNum(arr) { for (var i = arr.length - 1; i >= 0; i--) { var idx = regNavHist.resolveIdx(arr[i]); if (idx >= 0) return idx + 1; } return 0; }
+				function popValid(isBack) {
+					var arr = (isBack ? regNavHist.backArr : regNavHist.fwdArr).slice();
+					var key = "";
+					while (arr.length > 0) { var k = arr.pop(); if (regNavHist.resolves(k)) { key = k; break; } }
+					if (isBack) { regNavHist.backArr = arr; regNavHist.backLen = arr.length; }
+					else { regNavHist.fwdArr = arr; regNavHist.fwdLen = arr.length; }
+					return key;
+				}
+				function goBack() {
+					var key = regNavHist.popValid(true);
+					if (key !== "") {
+						var idx = regNavHist.resolveIdx(key);
+						if (idx >= 0) {
+							regNavHist.fwdArr.push(regNavHist.curKey); regNavHist.fwdLen = regNavHist.fwdArr.length;
+							regNavHist.navigating = true;
+							~&254547437090201330&~.~&7713405014271992&~(idx, ~&14175747548438644067&~.~&10593835380864769165&~.~&7442916920529273295&~);
+							~&8399923449641527401&~.~&214644635174&~ = idx;
+							~&8399923449641527401&~.~&8400080725944051707&~(idx);
+						}
+					}
+				}
+				function goForward() {
+					var key = regNavHist.popValid(false);
+					if (key !== "") {
+						var idx = regNavHist.resolveIdx(key);
+						if (idx >= 0) {
+							regNavHist.backArr.push(regNavHist.curKey); regNavHist.backLen = regNavHist.backArr.length;
+							regNavHist.navigating = true;
+							~&254547437090201330&~.~&7713405014271992&~(idx, ~&14175747548438644067&~.~&10593835380864769165&~.~&7442916920529273295&~);
+							~&8399923449641527401&~.~&214644635174&~ = idx;
+							~&8399923449641527401&~.~&8400080725944051707&~(idx);
+						}
+					}
+				}
+				~&428051690305612204&~ {
+					~&7083194890448&~: ~&233745975898428&~
+					function onRegNavBack() { regNavHist.goBack() }
+					function onRegNavForward() { regNavHist.goForward() }
+				}
+				onCurKeyChanged: {
+					if (curKey === "") { regNavHist.backArr = []; regNavHist.backLen = 0; regNavHist.fwdArr = []; regNavHist.fwdLen = 0; prevKey = ""; }
+					else if (prevKey === "") { prevKey = curKey; }
+					else if (navigating) { navigating = false; prevKey = curKey; }
+					else if (curKey !== prevKey) {
+						regNavHist.backArr.push(prevKey); regNavHist.backLen = regNavHist.backArr.length;
+						regNavHist.fwdArr = []; regNavHist.fwdLen = 0; prevKey = curKey;
+					}
+				}
+			}
+		}
+	END TRAVERSE
+	TRAVERSE [[8397993708429497603]]#[[6504254477]] > [[6502786168]]#[[15549782143769420265]]
+		LOCATE AFTER ALL
+		INSERT {
+			~&254501108490678590&~ {
+				~&233748328658231&~: ~&8399923449641527401&~.~&233748328658231&~
+				~&233721384511543&~.~&7082507142622&~: ~&8399923449641527401&~.~&197100796&~
+				~&233721384511543&~.~&15692798426932296956&~: 12
+				~&233721384511543&~.~&6504027668&~: ~&8399923449641527401&~.~&6504027668&~
+				~&233721384511543&~.~&8399743405844438450&~: 40
+				~&7082729686082&~: 74
+				~&214646099849&~: backRow.~&214646099849&~ + 28
+				~&180995&~: 100000
+				~&7083116119249&~: 12
+				~&214622605608&~: "transparent"
+				~&233739540775906&~: {
+					var d = ~&254547437090201330&~.~&7712934851008712&~;
+					var _pc = d ? d.~&254543134818768527&~ : 0;
+					var _bl = regNavHist.backLen;
+					var _ck = regNavHist.curKey;
+					return regNavHist.validCount(regNavHist.backArr) > 0 ? 1.0 : 0.3;
+				}
+				~&197063777&~ {
+					~&5972374&~: backRow
+					~&233721384511543&~.~&7712879746914881&~: ~&7083038346995&~
+					~&233744706647566&~: 12
+					~&214591687532&~ { ~&233721384511543&~.~&3441383163516681764&~: ~&7083038346995&~.~&3441383163516681764&~; ~&214646099849&~: 42; ~&7082729686082&~: 42; ~&7713012679492661&~: ~&214591687532&~.~&13563680926116790904&~; ~&7083172477658&~: "qrc:/ark/icons/arrow_left" }
+					~&6503165774&~ {
+						~&233721384511543&~.~&3441383163516681764&~: ~&7083038346995&~.~&3441383163516681764&~
+						~&6504315758&~: {
+							var d = ~&254547437090201330&~.~&7712934851008712&~;
+							var _pc = d ? d.~&254543134818768527&~ : 0;
+							var _bl = regNavHist.backLen;
+							var _ck = regNavHist.curKey;
+							var n = regNavHist.peekNum(regNavHist.backArr);
+							return n > 0 ? ("Back to page " + n) : "Back";
+						}
+						~&6503823200&~.pointSize: 21
+					}
+				}
+				~&254494525842443467&~ {
+					~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+					~&254542236275632405&~: () => regNavHist.goBack()
+				}
+			}
+			~&254501108490678590&~ {
+				~&233748328658231&~: ~&8399923449641527401&~.~&233748328658231&~
+				~&233721384511543&~.~&7082507142622&~: ~&8399923449641527401&~.~&197100796&~
+				~&233721384511543&~.~&15692798426932296956&~: 12
+				~&233721384511543&~.~&214640173127&~: ~&8399923449641527401&~.~&214640173127&~
+				~&233721384511543&~.~&499747351624466981&~: 40
+				~&7082729686082&~: 74
+				~&214646099849&~: fwdRow.~&214646099849&~ + 28
+				~&180995&~: 100000
+				~&7083116119249&~: 12
+				~&214622605608&~: "transparent"
+				~&233739540775906&~: {
+					var d = ~&254547437090201330&~.~&7712934851008712&~;
+					var _pc = d ? d.~&254543134818768527&~ : 0;
+					var _fl = regNavHist.fwdLen;
+					var _ck = regNavHist.curKey;
+					return regNavHist.validCount(regNavHist.fwdArr) > 0 ? 1.0 : 0.3;
+				}
+				~&197063777&~ {
+					~&5972374&~: fwdRow
+					~&233721384511543&~.~&7712879746914881&~: ~&7083038346995&~
+					~&233744706647566&~: 12
+					~&6503165774&~ {
+						~&233721384511543&~.~&3441383163516681764&~: ~&7083038346995&~.~&3441383163516681764&~
+						~&6504315758&~: {
+							var d = ~&254547437090201330&~.~&7712934851008712&~;
+							var _pc = d ? d.~&254543134818768527&~ : 0;
+							var _fl = regNavHist.fwdLen;
+							var _ck = regNavHist.curKey;
+							var n = regNavHist.peekNum(regNavHist.fwdArr);
+							return n > 0 ? ("Forward to page " + n) : "Forward";
+						}
+						~&6503823200&~.pointSize: 21
+					}
+					~&214591687532&~ { ~&233721384511543&~.~&3441383163516681764&~: ~&7083038346995&~.~&3441383163516681764&~; ~&214646099849&~: 42; ~&7082729686082&~: 42; ~&7713012679492661&~: ~&214591687532&~.~&13563680926116790904&~; ~&7083172477658&~: "qrc:/ark/icons/arrow_right" }
+				}
+				~&254494525842443467&~ {
+					~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+					~&254542236275632405&~: () => regNavHist.goForward()
+				}
+			}
+		}
+	END TRAVERSE
+END AFFECT
+
+; --- Bridge + gestures (added 2026-06-20): 5-finger swipe RIGHT = Back, swipe LEFT = Forward ---
+; The gesture lives in SceneViewGestures.qml (a different file from regNavHist), so it cannot touch regNavHist
+; directly. Bridge via the SHARED toolbar: two signals on Toolbar.qml, the swipe emits them
+; (toolbar.regNavBack()/regNavForward()), and the Connections in regNavHist (above) runs goBack/goForward.
+; toolbar is the single Toolbar instance (DocumentView id:toolbar -> passed to DeviceSceneView -> context-prop
+; in SceneViewGestures). Gesture cloned from pageOverviewSwipe.qmd (5-finger, onTriggered + 2*pixelsPerCm
+; threshold); only direction (right 1,0 = Back / left -1,0 = Forward) + action differ. left/right 5-finger are free (existing
+; 5-finger swipes are up/down). No rebuild_hashtable; regNavBack/regNavForward are our own clear-text signals.
+
+AFFECT [[11313888899523275277]]
+	TRAVERSE [[8397993708429497603]]
+		LOCATE AFTER ALL
+		INSERT {
+			signal regNavBack()
+			signal regNavForward()
+		}
+	END TRAVERSE
+END AFFECT
+
+AFFECT [[17298303916558156758]]
+	TRAVERSE [[254504370080162629]]
+		LOCATE BEFORE ALL
+		INSERT {
+			~&8545339034058226003&~ {
+				~&5972374&~: navHistoryBack
+				~&8399878573055752961&~: "navHistory-back"
+				~&233726547792244&~: !~&254549375155946341&~.~&16735792760298061570&~
+				~&7712927726759444&~: 2 * ~&254549375155946341&~.~&496707965879903317&~
+				~&254526613107157226&~: ~&5971598&~.~&214638019283&~(1, 0)
+				~&6503646466&~: ~&5971598&~.~&6504243191&~(0, 0, ~&254549375155946341&~.~&214646099849&~, ~&254549375155946341&~.~&7082729686082&~)
+				~&233727659172727&~: 5
+				~&495358363329399331&~: ~&233745975898428&~.regNavBack()
+			}
+			~&8545339034058226003&~ {
+				~&5972374&~: navHistoryForward
+				~&8399878573055752961&~: "navHistory-forward"
+				~&233726547792244&~: !~&254549375155946341&~.~&16735792760298061570&~
+				~&7712927726759444&~: 2 * ~&254549375155946341&~.~&496707965879903317&~
+				~&254526613107157226&~: ~&5971598&~.~&214638019283&~(-1, 0)
+				~&6503646466&~: ~&5971598&~.~&6504243191&~(0, 0, ~&254549375155946341&~.~&214646099849&~, ~&254549375155946341&~.~&7082729686082&~)
+				~&233727659172727&~: 5
+				~&495358363329399331&~: ~&233745975898428&~.regNavForward()
+			}
+		}
+	END TRAVERSE
+END AFFECT
