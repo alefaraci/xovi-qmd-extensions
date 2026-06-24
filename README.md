@@ -6,7 +6,7 @@ At its core:
 - **[Gestik](#gestik)** — three-, four-finger gestures to instant switch writing tools without reaching for the toolbar; five-finger gestures for navigation to page overview / ToC. Most of the gestures are configurable from: *Settings ▸ Gestik* page.
 - **[LinkFromSelection](#linkfromselection)** — *links* from a selection: jump to a page in the current document, or open another document.
 - **[NavHistory](#navhistory)** — *Back & Forward* navigation through your visited-page history.
-- **additional nine tweaks and refinements** — see the [extensions table](#available-extensions) below.
+- **Additional nine tweaks** — see the [extensions table](#available-extensions) below.
 
 Tested only for the latest reMarkable OS *xochitl 3.27.2.2* (rM Paper Pure).
 
