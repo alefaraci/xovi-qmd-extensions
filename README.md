@@ -5,7 +5,7 @@ A personal suite of custom [XOVI](https://github.com/asivery/xovi) `.qmd` extens
 At its core: 
 - **[Gestik](#Gestic)** — three-, four-finger gestures to instant switch writing tools without reaching for the toolbar; five-finger gestures for navigation to page overview / ToC. Most of the gestures are configurable from: *Settings ▸ Gestik* page.
 - **[LinkFromSelection](#Linkfromselection)** — *links* from a selection: jump to a page in the current document, or open another document.
-- **[NavHistory](#Navhistory)** — *Back & Forward* navigation through your visited-page history.
+- **[NavHistory](#navhistory)** — *Back & Forward* navigation through your visited-page history.
 - **additional nine tweaks and refinements** — see the [extensions table](#available-extensions) below.
 
 Tested only for the latest reMarkable OS *xochitl 3.27.2.2* (rM Paper Pure).
