@@ -16,13 +16,13 @@ Requires a developer-mode reMarkable running [XOVI](https://github.com/asivery/x
 [qt-resource-rebuilder](https://github.com/asivery/rm-xovi-extensions/tree/master/qt-resource-rebuilder). Every extension needs `qt-resource-rebuilder`; a few need other `XOVI` extensions.
 
 
-### Vellum package manager (recommended)
+<!-- ### Vellum package manager (recommended)
 
 Most extensions are available in [Vellum](https://vellum.delivery):
 
 ```sh
 vellum add <extension-name>
-```
+``` -->
 
 ### Manual
 
@@ -67,7 +67,7 @@ Multi-finger gesture bundle: pen/tool & thickness presets on the 3- and 4-finger
 
 ### LinkFromSelection
 
-Adds **links** on the page straight from a selection. Lasso some strokes, then tap one of the two buttons in the selection menu:
+Adds links on the page straight from a selection. Lasso some strokes, then tap one of the two buttons in the selection menu:
 
 - **Same-document link** — tap a page from the native page overview / ToC and a clickable icon appears next to the selection. Tapping the icon jumps to that page.
 - **Cross-document link** — from the file browser, select a document, then a page to link. Tapping the clickable icon created on the source page opens the
@@ -83,7 +83,7 @@ Adds **links** on the page straight from a selection. Lasso some strokes, then t
 Links works in `PDF`, `Notebook` and `EPUB` files.
 
 >[!Tip]
-> **Long-press** the icon for an *edit / delete* menu (re-pick the target, or remove the link). Links are stored *per document*, inside the document's own folder, so they're auto-deleted with it and survive restarts. If a target document or page no longer exists, tapping its icon offers to delete the dangling link.
+> Long-press the icon for an *edit / delete* menu (re-pick the target, or remove the link). Links are stored *per document*, inside the document's own folder, so they're auto-deleted with it and survive restarts. If a target document or page no longer exists, tapping its icon offers to delete the dangling link.
 
 | ![same document](./assets/Link%20internal%20delete.png) | ![external document](./assets/Link%20external%20delete.png) |
 |:---:|:---:|
@@ -95,7 +95,7 @@ Links works in `PDF`, `Notebook` and `EPUB` files.
 
 ### NavHistory
 
-Adds **back & forward navigation** through the pages visited (hyperlink/ToC jumps and page turns), like a desktop PDF viewer's `‹ ›`. Swipe up the quick-browse page-slider to reveal *Back / Forward* buttons. The same actions are also bound to a *5-finger swipe left / right*. Jumps track page identity, so they stay correct across page insert/delete/reorder.
+Adds back & forward navigation through the pages visited (hyperlink/ToC jumps and page turns), like a desktop PDF viewer's `‹ ›`. Swipe up the quick-browse page-slider to reveal *Back / Forward* buttons. The same actions are also bound to a *5-finger swipe left / right*. Jumps track page identity, so they stay correct across page insert/delete/reorder.
 
 
 | ![navHistory gestures](./assets/NavHistory%20cheat%20sheet.png) | ![navHistory menu](./assets/NavHistory.png)  |
@@ -125,7 +125,7 @@ Adds a *collapse-all / expand-all button* to the Table-of-Contents header bar. T
 
 ### ForceWideColumn
 
-Whenever a note that has typed text is opened, its column is forced to **Wide**, including notes you created earlier. 
+Whenever a note that has typed text is opened, its column is forced to *Wide*, including notes you created earlier. 
 
 | Narrow / Medium column |  Wide column |
 |:---:|:---:|
@@ -177,7 +177,7 @@ quick-browse page-slider is up (a one-finger swipe up from the bottom edge).
 
 ### DockButtons
 
-Adds four shortcut buttons to the homepage dock: **My Files**, **Favorites**, **Tags** and **Trash**, each jumping the file browser straight to that view in one tap. This extends the original [FouzR](https://github.com/FouzR)'s [`favTagButton.qmd`](https://github.com/FouzR/xovi-extensions/blob/main/3.27/favTagButton.qmd).
+Adds four shortcut buttons to the homepage dock: *My Files*, *Favorites*, *Tags* and *Trash*, each jumping the file browser straight to that view in one tap. This extends the original [FouzR](https://github.com/FouzR)'s [`favTagButton.qmd`](https://github.com/FouzR/xovi-extensions/blob/main/3.27/favTagButton.qmd).
 
 | <img src="./assets/Dock.png" width="475"> |
 |:--:|
@@ -186,7 +186,7 @@ Adds four shortcut buttons to the homepage dock: **My Files**, **Favorites**, **
 
 ### ToolbarTool
 
-Turns the toolbar expand button into an at-a-glance readout of the active tool. This is adapted from [`toolbar_icon.qmd`](https://github.com/FouzR/xovi-extensions/blob/main/3.27/toolbar_icon.qmd); the changes are layout-only: two tuned values (`font.pointSize` 20→15, `leftPadding` 10→4) plus right-justifying the thickness number, all for half-step (X.5) thickness readability.
+Turns the toolbar expand button into an at-a-glance readout of the active tool. This is adapted from [FouzR](https://github.com/FouzR)'s [`toolbar_icon.qmd`](https://github.com/FouzR/xovi-extensions/blob/main/3.27/toolbar_icon.qmd); the changes are layout-only: two tuned values (`font.pointSize` 20→15, `leftPadding` 10→4) plus right-justifying the thickness number, all for half-step (X.5) thickness readability.
 
 |`toolbar_icon.qmd` |`toolbarTool.qmd` |
 |:---:|:---:|
