@@ -3,8 +3,8 @@
 A personal suite of custom [XOVI](https://github.com/asivery/xovi) `.qmd` extensions to enhance the reMarkable tablet workflow, refining the user interface and unlocking essential missing features.
 
 At its core: 
-- **[Gestik](#Gestic)** — three-, four-finger gestures to instant switch writing tools without reaching for the toolbar; five-finger gestures for navigation to page overview / ToC. Most of the gestures are configurable from: *Settings ▸ Gestik* page.
-- **[LinkFromSelection](#Linkfromselection)** — *links* from a selection: jump to a page in the current document, or open another document.
+- **[Gestik](#gestic)** — three-, four-finger gestures to instant switch writing tools without reaching for the toolbar; five-finger gestures for navigation to page overview / ToC. Most of the gestures are configurable from: *Settings ▸ Gestik* page.
+- **[LinkFromSelection](#linkfromselection)** — *links* from a selection: jump to a page in the current document, or open another document.
 - **[NavHistory](#navhistory)** — *Back & Forward* navigation through your visited-page history.
 - **additional nine tweaks and refinements** — see the [extensions table](#available-extensions) below.
 
