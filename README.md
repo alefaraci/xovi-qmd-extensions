@@ -4,7 +4,7 @@ A personal suite of custom [XOVI](https://github.com/asivery/xovi) `.qmd` extens
 
 At its core: 
 - **[Gestik](#gestik)** — three-, four-finger gestures to instant switch writing tools without reaching for the toolbar; five-finger gestures for navigation to page overview / ToC. Configurable from: *Settings ▸ Gestik* page.
-- **[LinkFromSelection](#linkfromselection)** — *links* from a selection: jump to a page in the current document, or open another document.
+- **[LinkFromSelection](#linkfromselection)** — *links* from a selection: jump to a page in the same document or another one.
 - **[NavHistory](#navhistory)** — *Back & Forward* navigation through your visited-page history.
 - **Additional nine tweaks** — see the [extensions table](#available-extensions) below.
 
