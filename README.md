@@ -53,6 +53,7 @@ ssh  root@10.11.99.1 'systemctl restart xochitl'
 ---
 
 ### Gestik
+[![vellum](https://img.shields.io/badge/vellum-gestik-6ed2ff?style=flat-square)](https://vellum.delivery/#/package/gestik/)
 
 Multi-finger gesture bundle: pen/tool & thickness presets on the 3- and 4-finger swipes, Selection/Lasso on a 4-finger tap, Page Overview / Table of Contents on 5-finger swipes. Each pen gesture switches the tool and sets its thickness and colour. Configurable from a dedicated **Settings ▸ Gestik** page.
 
@@ -66,6 +67,7 @@ Multi-finger gesture bundle: pen/tool & thickness presets on the 3- and 4-finger
 ---
 
 ### LinkFromSelection
+[![vellum](https://img.shields.io/badge/vellum-link--from--selection-6ed2ff?style=flat-square)](https://vellum.delivery/#/package/link-from-selection/)
 
 Adds links on the page straight from a selection. Lasso some strokes, then tap one of the two buttons in the selection menu:
 
@@ -94,6 +96,7 @@ Links works in `PDF`, `Notebook` and `EPUB` files.
 ---
 
 ### NavHistory
+[![vellum](https://img.shields.io/badge/vellum-nav--history-6ed2ff?style=flat-square)](https://vellum.delivery/#/package/nav-history/)
 
 Adds back & forward navigation through the pages visited (hyperlink/ToC jumps and page turns), like a desktop PDF viewer's `‹ ›`. Swipe up the quick-browse page-slider to reveal *Back / Forward* buttons. The same actions are also bound to a *5-finger swipe left / right*. Jumps track page identity, so they stay correct across page insert/delete/reorder.
 
@@ -124,6 +127,7 @@ Adds a *collapse-all / expand-all button* to the Table-of-Contents header bar. T
 ---
 
 ### ForceWideColumn
+[![vellum](https://img.shields.io/badge/vellum-force--wide--column-6ed2ff?style=flat-square)](https://vellum.delivery/#/package/force-wide-column/)
 
 Whenever a note that has typed text is opened, its column is forced to *Wide*, including notes you created earlier. 
 
@@ -137,6 +141,7 @@ Whenever a note that has typed text is opened, its column is forced to *Wide*, i
 ---
 
 ### FasterPageLabels
+[![vellum](https://img.shields.io/badge/vellum-faster--page--labels-6ed2ff?style=flat-square)](https://vellum.delivery/#/package/faster-page-labels/)
 
 Shortens how long the page-number label (bottom of the screen) lingers after a page turn before it auto-hides (~1.25 s).
 
@@ -147,6 +152,7 @@ Shortens how long the page-number label (bottom of the screen) lingers after a p
 ---
 
 ### FasterScrollBar
+[![vellum](https://img.shields.io/badge/vellum-faster--scroll--bar-6ed2ff?style=flat-square)](https://vellum.delivery/#/package/faster-scroll-bar/)
 
 Shortens how long the scroll bar lingers after you lift your finger (fades in ~0.35 s).
 
@@ -157,6 +163,7 @@ Shortens how long the scroll bar lingers after you lift your finger (fades in ~0
 ---
 
 ### HideBackToPageBar
+[![vellum](https://img.shields.io/badge/vellum-hide--back--to--page--bar-6ed2ff?style=flat-square)](https://vellum.delivery/#/package/hide-back-to-page-bar/)
 
 After you follow a PDF hyperlink, `xochitl` pops a *"Back to page N"* notification bar at the bottom of the screen. With [navHistory](#navHistory) already providing Back/Forward, that bar is redundant. this extension removes it entirely.
 
@@ -166,6 +173,7 @@ After you follow a PDF hyperlink, `xochitl` pops a *"Back to page N"* notificati
 ---
 
 ### HideTitleQuickBrowse
+[![vellum](https://img.shields.io/badge/vellum-hide--title--quick--browse-6ed2ff?style=flat-square)](https://vellum.delivery/#/package/hide-title-quick-browse/)
 
 Removes the document-title bar shown at the top of the screen while the
 quick-browse page-slider is up (a one-finger swipe up from the bottom edge).
@@ -176,6 +184,7 @@ quick-browse page-slider is up (a one-finger swipe up from the bottom edge).
 ---
 
 ### DockButtons
+[![vellum](https://img.shields.io/badge/vellum-dock--buttons-6ed2ff?style=flat-square)](https://vellum.delivery/#/package/dock-buttons/)
 
 Adds four shortcut buttons to the homepage dock: *My Files*, *Favorites*, *Tags* and *Trash*, each jumping the file browser straight to that view in one tap. This extends the original [FouzR](https://github.com/FouzR)'s [`favTagButton.qmd`](https://github.com/FouzR/xovi-extensions/blob/main/3.27/favTagButton.qmd).
 
@@ -195,6 +204,7 @@ Turns the toolbar expand button into an at-a-glance readout of the active tool. 
 ---
 
 ### CollapseToolbarOnOpen
+[![vellum](https://img.shields.io/badge/vellum-collapse--toolbar--on--open-6ed2ff?style=flat-square)](https://vellum.delivery/#/package/collapse-toolbar-on-open/)
 
 Opens every document (notebook, PDF, typed-text) with the toolbar forced into its collapsed state for a distraction-free page. 
 
