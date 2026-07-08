@@ -3,7 +3,7 @@
 A personal suite of custom [XOVI](https://github.com/asivery/xovi) `.qmd` extensions to enhance the reMarkable tablet workflow, refining the user interface and unlocking essential missing features.
 
 At its core: 
-- **[Gestik](#gestik)** — three-, four-finger gestures to instant switch writing tools without reaching for the toolbar; five-finger gestures for navigation to page overview / ToC. Configurable from: *Settings ▸ Gestik* page.
+- **[Gestik](#gestik)** — three-, four-, five-finger gestures to instant switch writing tools / navigation to page overview / ToC and more without reaching for the toolbar. Configurable from: *Settings ▸ Gestik* page.
 - **[LinkFromSelection](#linkfromselection)** — *links* from a selection: jump to a page in the same document or another one.
 - **[NavHistory](#navhistory)** — *Back & Forward* navigation through your visited-page history.
 - **Additional nine tweaks** — see the [extensions table](#available-extensions) below.
@@ -55,14 +55,22 @@ ssh  root@10.11.99.1 'systemctl restart xochitl'
 ### Gestik
 [![vellum](https://img.shields.io/badge/vellum-gestik-6ed2ff?style=flat-square)](https://vellum.delivery/#/package/gestik/)
 
-Multi-finger gesture bundle: pen/tool & thickness presets on the 3- and 4-finger swipes, Selection/Lasso on a 4-finger tap, Page Overview / Table of Contents on 5-finger swipes. Each pen gesture switches the tool and sets its thickness and colour. Configurable from a dedicated **Settings ▸ Gestik** page.
+A configurable multi-finger gesture bundle from a dedicated **Settings ▸ Gestik** page. Map any 3-, 4-, or 5-finger swipe to the tool or action you want.
 
-| ![gestik cheat sheet](./assets/Gestik%20cheat%20sheet%201.png) | ![gestik settings](./assets/Gestik%20cheat%20sheet%202.png) |
+| Action | What it does |
+|---|---|
+| **Pens** — Pencil, Ball Point, Fine Liner, Marker, Highlighter, Calligraphy, Shader, Paintbrush, Mechanical Pencil | Switches the tool and sets its thickness and colour |
+| **Eraser** / **Erase Selection** | Swipe again to reactivate the previous pen |
+| **Page Overview** | Opens the page overview |
+| **Table of Contents** | Opens the ToC |
+| **Search** | Opens search |
+| **Show / Hide Template or PDF Background** | Toggles the template or PDF background |
+| **Increase / Decrease Thickness** | Steps the current pen's thickness up or down by 0.5 |
+| **Lasso** / **Selection** | Swipe again to reactivate the previous pen |
+| **Off** | Disables the gesture |
+
+| ![gestik cheat sheet](./assets/Gestik%20cheat%20sheet.png) | ![gestik settings](./assets/Gestik%20settings.png) |
 |:---:|:---:|
-
-| <img src="./assets/Gestik settings.png" width="475"> |
-|:--:|
-
 
 ---
 
