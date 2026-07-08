@@ -16,13 +16,13 @@ Requires a developer-mode reMarkable running [XOVI](https://github.com/asivery/x
 [qt-resource-rebuilder](https://github.com/asivery/rm-xovi-extensions/tree/master/qt-resource-rebuilder). Every extension needs `qt-resource-rebuilder`; a few need other `XOVI` extensions.
 
 
-<!-- ### Vellum package manager (recommended)
+### Vellum package manager (recommended)
 
 Most extensions are available in [Vellum](https://vellum.delivery):
 
 ```sh
 vellum add <extension-name>
-``` -->
+``` 
 
 ### Manual
 
@@ -40,7 +40,6 @@ ssh  root@10.11.99.1 'systemctl restart xochitl'
 | [**gestik.qmd**](#gestik) | Configurable **multi-finger gestures** from: **Settings ▸ Gestik** page |
 | [**linkFromSelection.qmd**](#linkfromselection) | On-page **links** from a lasso selection: tap to jump to a page in the current document or to another document; long-press to edit/delete the link |
 | [**navHistory.qmd**](#navhistory) | **Page Back & Forward navigation** through visited-page history, via quick-browse arrow buttons or 5-finger swipes |
-| [**betterTocCollapseAll.qmd**](#bettertoccollapseall) | Adds a **collapse-all** / **expand-all button** to the Table-of-Contents header. *Requires [betterToc](https://github.com/rmitchellscott/xovi-bettertoc) + [betterTocCollapse](https://github.com/rmitchellscott/xovi-qmd-extensions#bettertoccollapse) mods* |
 | [**forceWideColumn.qmd**](#forcewidecolumn) | Forces every note's typed text to the **Wide column** on open, including existing notes |
 | [**fasterPageLabels.qmd**](#fasterpagelabels) | Auto-hides the page-number label ~1.25 s after a page turn |
 | [**fasterScrollBar.qmd**](#fasterscrollbar) | Auto-hides the document scrollbar ~0.35 s after you stop scrolling |
@@ -57,6 +56,9 @@ ssh  root@10.11.99.1 'systemctl restart xochitl'
 
 A configurable multi-finger gesture bundle from a dedicated **Settings ▸ Gestik** page. Map any 3-, 4-, or 5-finger swipe to the tool or action you want.
 
+| ![gestik cheat sheet](./assets/Gestik%20cheat%20sheet.png) | ![gestik settings](./assets/Gestik%20settings.png) |
+|:---:|:---:|
+
 | Action | What it does |
 |---|---|
 | **Pens** — Pencil, Ball Point, Fine Liner, Marker, Highlighter, Calligraphy, Shader, Paintbrush, Mechanical Pencil | Switches the tool and sets its thickness and colour |
@@ -66,11 +68,8 @@ A configurable multi-finger gesture bundle from a dedicated **Settings ▸ Gesti
 | **Search** | Opens search |
 | **Show / Hide Template or PDF Background** | Toggles the template or PDF background |
 | **Increase / Decrease Thickness** | Steps the current pen's thickness up or down by 0.5 |
-| **Lasso** / **Selection** | Swipe again to reactivate the previous pen |
+| **Lasso** / **Selection** | Tap again to reactivate the previous pen |
 | **Off** | Disables the gesture |
-
-| ![gestik cheat sheet](./assets/Gestik%20cheat%20sheet.png) | ![gestik settings](./assets/Gestik%20settings.png) |
-|:---:|:---:|
 
 ---
 
@@ -115,22 +114,6 @@ Adds back & forward navigation through the pages visited (hyperlink/ToC jumps an
 
 | <img src="./assets/NavHistory.gif" width="475"> |
 |:--:|
-
----
-
-### BetterTocCollapseAll
-
-Adds a *collapse-all / expand-all button* to the Table-of-Contents header bar. The button is hidden for documents with no nested entries.
-
-| <img src="./assets/ToC button.png" width="475"> |
-|:--:|
-
-| <img src="./assets/ToC.gif" width="475"> |
-|:--:|
-
-
-> [!IMPORTANT]
-> Requires [betterToc](https://github.com/rmitchellscott/xovi-bettertoc) and [betterTocCollapse](https://github.com/rmitchellscott/xovi-qmd-extensions/#betterTocCollapse). It's a companion to those mods, which provide the ToC view and the per-entry collapse state it builds on.
 
 ---
 
