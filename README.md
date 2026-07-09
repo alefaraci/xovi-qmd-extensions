@@ -92,13 +92,13 @@ Adds links on the page straight from a selection. Lasso some strokes, then tap o
 Links works in `PDF`, `Notebook` and `EPUB` files.
 
 >[!Tip]
-> Long-press the icon for an *edit / delete* menu (re-pick the target, or remove the link). Links are stored *per document*, inside the document's own folder, so they're auto-deleted with it and survive restarts. If a target document or page no longer exists, tapping its icon offers to delete the dangling link.
+> Long-press the icon for an *edit / reposition / delete* menu (re-pick the target, reposition or remove the link). Links are stored *per document*, inside the document's own folder, so they're auto-deleted with it and survive restarts. If a target document or page no longer exists, tapping its icon offers to delete the dangling link.
 
 | ![same document](./assets/Link%20internal%20delete.png) | ![external document](./assets/Link%20external%20delete.png) |
 |:---:|:---:|
 
 >[!Important]
-> A link is independent of the strokes you drew it from: **erasing that handwriting does not delete the link**. A link also can't be selected or dragged, so to move a link, delete it and create a new one in the new position.
+> A link is independent of the strokes you drew it from: **erasing that handwriting does not delete the link**. A link also can't be selected with lasso tool and dragged. If you need to reposition one, you can either long-press the icon and tap on the reposition button, move the original handwriting that generated it, or simply delete the link and create a new one in a new position.
 
 ---
 
