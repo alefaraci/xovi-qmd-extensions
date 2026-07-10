@@ -120,14 +120,14 @@ Adds back & forward navigation through the pages visited (hyperlink/ToC jumps an
 ---
 
 ### Dictionary
-[![vellum](https://img.shields.io/badge/vellum-dictionary-6ed2ff?style=flat-square)](https://vellum.delivery/#/package/dictionary/)
+[![vellum](https://img.shields.io/badge/vellum-dictionary--wiki--translator-6ed2ff?style=flat-square)](https://vellum.delivery/#/package/dictionary-wiki-translator/)
 
 Adds integrated dictionary, Wikipedia, and translation capabilities for PDFs and EPUBs. By lassoing a word or phrase and tapping the book icon in the selection menu, a bottom panel opens with three tabs:
 1. **Dictionary**: Offline (download up to 3 of 12 available languages via Settings)
-2. **Encyclopaedia**: Online (fetches summaries)
+2. **Encyclopedia**: Online (fetches summaries)
 3. **Translator**: Online (*MyMemory* – works instantly without an API key and *DeepL* – requires to set an API key from [deepl.com/pro#api](https://www.deepl.com/pro#api))
 
-*Configuration*: The mod is customizable via the dedicated **Settings ▸ Dictionary** page. Here, you can download up to 3 of 12 available offline dictionary languages, select your preferred translation service (MyMemory / DeepL), and input your DeepL API key.
+The mod is customizable via the dedicated **Settings ▸ Dictionary** page. Here, you can download up to 3 of 12 available offline dictionary languages, select your preferred translation service (MyMemory / DeepL), and input your DeepL API key.
 
 | <img src="./assets/Selection dict.png" width="275"> |
 |:--:|
