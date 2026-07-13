@@ -1,15 +1,9 @@
 ; Alessio Faraci (https://github.com/alefaraci)
-; On-canvas Dictionary + Wikipedia + Translator for a lasso-selected PDF/EPUB word.
-; Offline dictionary (up to 3 of 12 languages, downloaded from Settings) + online Wikipedia summary + online Translator.
-; Dictionary data & Wikipedia text: Wiktionary / Wikipedia via kaikki.org / Wiktextract (CC-BY-SA); translations by DeepL / MyMemory.
 ; SPDX-License-Identifier: GPL-3.0-only
 ; Modified: 2026-07-13
 ;
 ; Requires: https://github.com/asivery/rm-xovi-extensions (qt-resource-rebuilder + qt-command-executor)
 
-; ============================================================================================================
-; 1) Native glyph-selection menu: Copy -> icon-only, tighter gap, add a "Dictionary" button + a dictLookup signal.
-; ============================================================================================================
 AFFECT [[2170432337220872387]]
 	TRAVERSE ?#[[6504254477]]
 		LOCATE AFTER ALL
@@ -45,9 +39,6 @@ AFFECT [[2170432337220872387]]
 	END TRAVERSE
 END AFFECT
 
-; ============================================================================================================
-; 2) DeviceSceneView: enable glyph selection, receive the signal, do the lookup, host the definition panel.
-; ============================================================================================================
 AFFECT [[11806562588218124596]]
 	TRAVERSE ?#[[1515638797115235411]]
 		LOCATE AFTER ALL
@@ -1258,10 +1249,6 @@ AFFECT [[11806562588218124596]]
 	END TRAVERSE
 END AFFECT
 
-; ============================================================================================================
-; 3) Settings > Dictionary page: choose translation service (MyMemory | DeepL) + enter the DeepL API key.
-;    Modeled on gestik.qmd's Settings injection; distinct page index 98 (gestik uses 97) so both coexist.
-; ============================================================================================================
 AFFECT [[12599552112012170435]]
 	TRAVERSE [[3819512207256720568]]#[[7713561876955258]]
 		LOCATE BEFORE ALL
@@ -1328,7 +1315,7 @@ AFFECT [[12599552112012170435]]
 					property ~&7083178290016&~ dlCurLang: ""
 					property ~&197102514&~ dlQueue: []
 					property ~&197088788&~ dlPos: 0
-				
+
 					~&254480451320573660&~.~&495334332051582499&~: { loadConfig(); checkInstalled(); }
 
 					~&214604601930&~ {
@@ -1354,7 +1341,7 @@ AFFECT [[12599552112012170435]]
 						~&7083194890448&~: ~&5971598&~.~&486208409901236410&~
 						function onKeyboardRectangleChanged() { _dset._kbReveal(); }
 					}
-				
+
 					function _kbReveal() {
 						~&5972376&~ (!_keyInput.~&473450369389093477&~) { ~&7083121450889&~; }
 						~&5972376&~ (~&5971598&~.~&486208409901236410&~.~&12597718284824111823&~.~&7082729686082&~ <= 0) { ~&7083121450889&~; }
@@ -1575,7 +1562,7 @@ AFFECT [[12599552112012170435]]
 						try { req.~&6504147419&~("GET", "file:///tmp/dictdl.pct"); req.~&6504279475&~(); }
 						catch (~&180974&~) { }
 					}
-				
+
 					~&8398580812105622257&~ {
 						~&5972374&~: _scroll
 						~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
@@ -1583,21 +1570,21 @@ AFFECT [[12599552112012170435]]
 						~&15743061641160745028&~: ~&214646099849&~
 						~&3012200093845531741&~: _dcol.~&2122835675838176157&~ + ~&425121728314878811&~.~&7082020628281&~.~&7713442318223278&~.~&233744706647566&~.~&233748750575870&~
 						~&10031540993547567188&~: ~&6504329801&~
-				
+
 						~&14125623155555875541&~ {
 							~&5972374&~: _dcol
 							~&180993&~: ~&425121728314878811&~.~&7082020628281&~.~&7082920942823&~.~&8399572322985746835&~.~&214632782036&~
 							~&214646099849&~: ~&7083038346995&~.~&214646099849&~ - 2 * ~&425121728314878811&~.~&7082020628281&~.~&7082920942823&~.~&8399572322985746835&~.~&214632782036&~
 							~&233744706647566&~: ~&425121728314878811&~.~&7082020628281&~.~&7713442318223278&~.~&233744706647566&~.~&233748750575870&~
-				
+
 							~&425121728314878811&~.~&7179807676896158689&~ { ~&7081629735527&~.~&254529418434902000&~: ~&6504329801&~ }
-				
+
 							~&425121728314878811&~.~&214604609771&~ {
 								~&6504337259&~: ~&425121728314878811&~.~&214604609771&~.~&214594832564&~
 								~&6504315758&~: ~&6504222003&~("Dictionary")
 								~&7081629735527&~.~&254549367831075482&~: -~&425121728314878811&~.~&7082020628281&~.~&7713442318223278&~.~&233744706647566&~.~&233748750575870&~
 							}
-				
+
 							~&425121728314878811&~.~&214599571833&~ {
 								~&7081629735527&~.~&254529418434902000&~: ~&6504329801&~
 								~&214632764553&~: ~&6504222003&~("Select dictionary languages (up to 3)")
@@ -1657,7 +1644,7 @@ AFFECT [[12599552112012170435]]
 									~&7713748390489352&~: ~&6503165774&~.~&7712381377343359&~
 								}
 							}
-				
+
 							~&425121728314878811&~.~&214599571833&~ {
 								~&7081629735527&~.~&254529418434902000&~: ~&6504329801&~
 								~&7081629735527&~.~&254549367831075482&~: ~&425121728314878811&~.~&7082020628281&~.~&7713442318223278&~.~&233744706647566&~.~&233748750575870&~
@@ -1683,7 +1670,7 @@ AFFECT [[12599552112012170435]]
 									~&254542236275632405&~: _dset.setService("deepl")
 								}
 							}
-				
+
 							~&425121728314878811&~.~&214599571833&~ {
 								~&233748328658231&~: _dset.~&233744297001338&~ === "deepl"
 								~&7081629735527&~.~&254529418434902000&~: ~&6504329801&~
@@ -1760,7 +1747,7 @@ AFFECT [[12599552112012170435]]
 							}
 						}
 					}
-				
+
 					~&254494525842443467&~ {
 						~&5972374&~: _dismiss
 						~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
@@ -1783,17 +1770,6 @@ AFFECT [[12599552112012170435]]
 	END TRAVERSE
 END AFFECT
 
-; ============================================================================================================
-; 4) DocumentView: hide the zoom indicator (zoomButton) while the dictionary panel is open — but ONLY when the pen
-;    toolbar is docked at the TOP. The badge is TOP-anchored for a Left/Right/Bottom toolbar (never reaches the bottom
-;    sheet), but a State re-anchors it to the BOTTOM when the toolbar is at Top -> only THERE does it overlap the panel.
-;    It lives in DocumentView.qml, a sibling layer ABOVE the DeviceSceneView uiOverlay, so it always paints over the panel
-;    no matter how high the panel's z is (parent stacking wins) — z can't fix it. So gate its own visibility: AND the
-;    original binding with !(sceneView.dictShown && toolbar at Top). sceneView = this DeviceSceneView instance; dictShown
-;    drives the panel. Original binding preserved, only gated.
-;    NOTE: do NOT also install hideZoomIndicator.qmd — it REPLACEs the same zoomButton.visible node, and two
-;    REPLACEs on one node yield malformed QML at load -> xochitl crash-loops. This mod supersedes it here.
-; ============================================================================================================
 AFFECT [[1224665461898798997]]
 	TRAVERSE ?#[[8400407604831274538]]
 		REPLACE [[233748328658231]] WITH {
