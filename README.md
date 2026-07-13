@@ -106,7 +106,7 @@ Links works in `PDF`, `Notebook` and `EPUB` files.
 ### NavHistory
 [![vellum](https://img.shields.io/badge/vellum-nav--history-6ed2ff?style=flat-square)](https://vellum.delivery/#/package/nav-history/)
 
-Adds back & forward navigation through the pages visited (hyperlink/ToC jumps and page turns), like a desktop PDF viewer's `‹ ›`. Swipe up the quick-browse page-slider to reveal *Back / Forward* buttons. The same actions are also bound to a *5-finger swipe left / right*. Jumps track page identity, so they stay correct across page insert/delete/reorder.
+Adds back & forward navigation through the pages visited (hyperlink/ToC jumps and page turns), like a desktop PDF viewer's `‹ ›`. Swipe up the quick-browse page-slider to reveal *Back / Forward* buttons. The same actions are also bound to a *5-finger swipe left / right*. Jumps track page identity, so they stay correct across page insert/delete/reorder. It adds also a back button to the previous opened document. 
 
 
 | ![navHistory gestures](./assets/NavHistory%20cheat%20sheet.png) | ![navHistory menu](./assets/NavHistory.png)  |
