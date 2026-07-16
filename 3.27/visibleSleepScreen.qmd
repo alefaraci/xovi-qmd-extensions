@@ -1,7 +1,7 @@
 ; Alessio Faraci (https://github.com/alefaraci)
 ; SPDX-License-Identifier: GPL-3.0-only
 ;
-; Requires: qt-resource-rebuilder + xovi-message-broker + the rm-visible-sleep-screen-capture.so + framebuffer-spy.
+; Requires: qt-resource-rebuilder.
 ; Modified: 2026-07-16
 
 SLOT visibleSleepBody INSERT {
@@ -18,8 +18,6 @@ SLOT visibleSleepBody INSERT {
 		property ~&6503679477&~ folioNow: {
 			try { ~&7083121450889&~ ~&6504254477&~.folioClosed === ~&6504329801&~; } catch (~&180974&~) { ~&7083121450889&~ ~&214625660372&~; }
 		}
-
-		property ~&197088788&~ appliedOri: 0
 
 		property ~&7083178290016&~ fullTitle: bannerText
 
@@ -67,7 +65,6 @@ SLOT visibleSleepBody INSERT {
 			~&5971598&~.~&254524858248187773&~(function() {
 				try {
 					~&6504254477&~.~&495572996767745525&~.~&16090618959592315326&~(~&180984&~);
-					sleepPhys.appliedOri = ~&180984&~;
 					~&233724020023100&~.~&197092075&~("SLEEPIMG oneShot " + ~&180984&~);
 				} catch (~&180974&~) {
 					~&233724020023100&~.~&197092075&~("SLEEPIMG oneShot failed: " + ~&180974&~);
@@ -103,30 +100,7 @@ SLOT visibleSleepBody INSERT {
 
 		~&14427530104363229979&~ {
 			~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
-			~&214622605608&~: ~&"214646069354&~
-
-			~&6502786168&~ {
-				~&5972374&~: shotFrame
-				~&233748328658231&~: sleepPhys.vcOn
-				~&233721384511543&~.~&7712879746914881&~: ~&7083038346995&~
-				~&214646099849&~:  (sleepPhys.appliedOri === 90 || sleepPhys.appliedOri === 270) ? ~&7083038346995&~.~&7082729686082&~ : ~&7083038346995&~.~&214646099849&~
-				~&7082729686082&~: (sleepPhys.appliedOri === 90 || sleepPhys.appliedOri === 270) ? ~&7083038346995&~.~&214646099849&~  : ~&7083038346995&~.~&7082729686082&~
-				~&7713532151049593&~: -sleepPhys.appliedOri
-
-				~&214591687532&~ {
-					~&5972374&~: shotImg
-					~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
-					~&7713012679492661&~: ~&214591687532&~.~&13563680926116790904&~
-					~&214622092445&~: ~&214625660372&~
-					~&15648605738915750485&~: ~&214625660372&~
-					~&7083172477658&~: sleepPhys.vcOn ? "file:///home/root/visible-sleep-screen/visible-content.bmp" : ""
-					~&17742136325200165396&~: {
-						~&5972376&~ (~&7083177691309&~ === ~&214591687532&~.~&214587142323&~ && String(shotImg.~&7083172477658&~).~&233731717342038&~("visible-content") !== -1) {
-							shotImg.~&7083172477658&~ = "file:///usr/share/remarkable/suspended.png";
-						}
-					}
-				}
-			}
+			~&214622605608&~: sleepPhys.vcOn ? "transparent" : ~&"214646069354&~
 
 			~&425121728314878811&~.~&254477135848310940&~ {
 				~&5972374&~: bannerBar
@@ -297,118 +271,6 @@ AFFECT /qt/qml/xofm/modules/sleepscreen/qml/default/sleep-window-opaque.qml
 	END TRAVERSE
 END AFFECT
 
-AFFECT [[1268416230467683501]]
-	TRAVERSE ?#[[6504254477]]
-		LOCATE AFTER ALL
-		INSERT {
-			~&6502786168&~ {
-				~&5972374&~: sleepCap
-
-				property ~&197102514&~ _broker: ~&6504117156&~
-				property ~&7083178290016&~ machine: ""
-
-				property ~&197088788&~ oriNow: 0
-				property ~&197088788&~ oriPrev: 0
-				property ~&7082585429636&~ oriChangedAt: 0
-
-				function _readOri() {
-					try {
-						~&197102514&~ n = ~&7081731278802&~(~&6504254477&~.~&495572996767745525&~.~&495572996767745525&~);
-						~&7083121450889&~ ~&214629831714&~(n) ? 0 : n;
-					} catch (~&180974&~) { ~&7083121450889&~ 0; }
-				}
-
-				function _noGyro() {
-					~&7083121450889&~ sleepCap.machine.~&233731717342038&~("reMarkable 1") !== -1
-						|| sleepCap.machine.~&233731717342038&~("reMarkable 2") !== -1;
-				}
-
-				function _carryOrientation() {
-					~&5972376&~ (!sleepCap._noGyro()) { ~&7083121450889&~; }
-					~&197102514&~ ~&180984&~ = sleepCap.oriNow;
-					~&197102514&~ age = ~&6502586279&~.now() - sleepCap.oriChangedAt;
-					~&5972376&~ (~&180984&~ === 0 && sleepCap.oriPrev !== 0 && age < 1500) {
-						~&180984&~ = sleepCap.oriPrev;
-						~&233724020023100&~.~&197092075&~("SLEEPCAP carry: pre-sleep revert " + sleepCap.oriPrev + "->0 " + ~&6502909715&~.~&214640404177&~(age) + "ms ago, using " + ~&180984&~);
-					}
-					~&5972376&~ (~&180984&~ !== 90 && ~&180984&~ !== 180 && ~&180984&~ !== 270) {
-						~&233724020023100&~.~&197092075&~("SLEEPCAP carry: ori=" + ~&180984&~ + ", portrait - no rotation");
-						~&7083121450889&~;
-					}
-					try {
-						~&6504254477&~.~&495572996767745525&~.~&16090618959592315326&~(~&180984&~);
-						~&233724020023100&~.~&197092075&~("SLEEPCAP oneShot " + ~&180984&~);
-					} catch (~&180974&~) {
-						~&233724020023100&~.~&197092075&~("SLEEPCAP oneShot FAILED: " + ~&180974&~);
-					}
-				}
-
-				function _mkBroker() {
-					~&197102514&~ tries = [
-						"import net.asivery.XoviMessageBroker 2.0; XoviMessageBroker {}",
-						"import net.asivery.XoviMessageBroker 1.0; XoviMessageBroker {}",
-						"import net.asivery.XoviMessageBroker; XoviMessageBroker {}"
-					];
-					~&197085552&~ (~&197102514&~ ~&180978&~ = 0; ~&180978&~ < tries.~&7082886407723&~; ~&180978&~++) {
-						try { ~&7083121450889&~ ~&5971598&~.createQmlObject(tries[~&180978&~], sleepCap); }
-						catch (~&180974&~) { ~&233724020023100&~.~&197092075&~("SLEEPCAP broker try " + ~&180978&~ + " failed: " + ~&180974&~); }
-					}
-					~&7083121450889&~ ~&6504117156&~;
-				}
-
-				function _capture(why) {
-					try {
-						~&5972376&~ (~&7712198086779994&~.~&11705357959816995461&~ !== ~&6504329801&~) {
-							~&233724020023100&~.~&197092075&~("SLEEPCAP skipped - Visible content OFF (" + why + ~&"180914&~);
-							~&7083121450889&~;
-						}
-					} catch (~&180974&~) { }
-					~&5972376&~ (!sleepCap._broker) { sleepCap._broker = sleepCap._mkBroker(); }
-					~&5972376&~ (!sleepCap._broker) { ~&233724020023100&~.~&197092075&~("SLEEPCAP no broker (" + why + ~&"180914&~); ~&7083121450889&~; }
-					sleepCap._broker.sendSimpleSignal("sleepCapture", "");
-					~&233724020023100&~.~&197092075&~("SLEEPCAP sent (" + why + ~&"180914&~);
-				}
-
-				~&428051690305612204&~ {
-					~&7083194890448&~: ~&6504254477&~.~&495572996767745525&~
-					function ~&4934706584521522300&~() {
-						sleepCap.oriPrev = sleepCap.oriNow;
-						sleepCap.oriNow = sleepCap._readOri();
-						sleepCap.oriChangedAt = ~&6502586279&~.now();
-					}
-				}
-
-				~&428051690305612204&~ {
-					~&7083194890448&~: ~&12464413590283098527&~
-					function ~&3195267410216262759&~(~&7713450226052422&~, ~&6504100136&~) {
-						~&5972376&~ (~&7713450226052422&~ === ~&12464413590283098527&~.~&7081724354802&~ && ~&6504100136&~ !== ~&12464413590283098527&~.~&7081724354802&~) {
-							sleepCap._capture("ds " + ~&7713450226052422&~ + "->" + ~&6504100136&~);
-							sleepCap._carryOrientation();
-						}
-					}
-				}
-
-				~&254480451320573660&~.~&495334332051582499&~: {
-					sleepCap._broker = sleepCap._mkBroker();
-					sleepCap.oriNow = sleepCap._readOri();
-					sleepCap.oriChangedAt = ~&6502586279&~.now();
-					~&233724020023100&~.~&197092075&~("SLEEPCAP loaded broker=" + (sleepCap._broker ? "OK" : "NULL") + " ori=" + sleepCap.oriNow);
-					~&197102514&~ req = new XMLHttpRequest();
-					req.onreadystatechange = function() {
-						~&5972376&~ (req.readyState !== XMLHttpRequest.DONE) { ~&7083121450889&~; }
-						sleepCap.machine = String(req.responseText || "");
-						~&233724020023100&~.~&197092075&~("SLEEPCAP machine=" + sleepCap.machine.replace("\n", "") + " noGyro=" + sleepCap._noGyro());
-					};
-					try {
-						req.~&6504147419&~("GET", "file:///sys/devices/soc0/machine");
-						req.~&6504279475&~();
-					} catch (~&180974&~) { ~&233724020023100&~.~&197092075&~("SLEEPCAP machine read failed: " + ~&180974&~); }
-				}
-			}
-		}
-	END TRAVERSE
-END AFFECT
-
 AFFECT /qml/device/view/main/MainView.qml
 	TRAVERSE ?#rootItem
 		REPLACE visible WITH {
@@ -430,6 +292,90 @@ AFFECT /qml/device/view/main/MainView.qml
 							EPFramebuffer.scheduleGhostRemoval();
 						}
 					}
+				}
+			}
+		}
+	END TRAVERSE
+END AFFECT
+
+AFFECT [[1268416230467683501]]
+	TRAVERSE ?#[[6504254477]]
+		LOCATE AFTER ALL
+		INSERT {
+			~&6502786168&~ {
+				~&5972374&~: sleepOri
+
+				property ~&7083178290016&~ machine: ""
+				property ~&197088788&~ oriNow: 0
+				property ~&197088788&~ oriPrev: 0
+				property ~&7082585429636&~ oriChangedAt: 0
+
+				function _readOri() {
+					try {
+						~&197102514&~ n = ~&7081731278802&~(~&6504254477&~.~&495572996767745525&~.~&495572996767745525&~);
+						~&7083121450889&~ ~&214629831714&~(n) ? 0 : n;
+					} catch (~&180974&~) { ~&7083121450889&~ 0; }
+				}
+
+				function _noGyro() {
+					~&7083121450889&~ sleepOri.machine.~&233731717342038&~("reMarkable 1") !== -1
+						|| sleepOri.machine.~&233731717342038&~("reMarkable 2") !== -1;
+				}
+
+				function _carryOrientation() {
+					~&5972376&~ (!sleepOri._noGyro()) { ~&7083121450889&~; }
+					try {
+						~&5972376&~ (~&7712198086779994&~.~&11705357959816995461&~ !== ~&6504329801&~) { ~&7083121450889&~; }
+					} catch (eGate) { }
+					~&197102514&~ ~&180984&~ = sleepOri.oriNow;
+					~&197102514&~ age = ~&6502586279&~.now() - sleepOri.oriChangedAt;
+					~&5972376&~ (~&180984&~ === 0 && sleepOri.oriPrev !== 0 && age < 1500) {
+						~&180984&~ = sleepOri.oriPrev;
+						~&233724020023100&~.~&197092075&~("SLEEPORI carry: pre-sleep revert " + sleepOri.oriPrev + "->0 " + ~&6502909715&~.~&214640404177&~(age) + "ms ago, using " + ~&180984&~);
+					}
+					~&5972376&~ (~&180984&~ !== 90 && ~&180984&~ !== 180 && ~&180984&~ !== 270) {
+						~&233724020023100&~.~&197092075&~("SLEEPORI carry: ori=" + ~&180984&~ + ", portrait - no rotation");
+						~&7083121450889&~;
+					}
+					try {
+						~&6504254477&~.~&495572996767745525&~.~&16090618959592315326&~(~&180984&~);
+						~&233724020023100&~.~&197092075&~("SLEEPORI oneShot " + ~&180984&~);
+					} catch (~&180974&~) {
+						~&233724020023100&~.~&197092075&~("SLEEPORI oneShot FAILED: " + ~&180974&~);
+					}
+				}
+
+				~&428051690305612204&~ {
+					~&7083194890448&~: ~&6504254477&~.~&495572996767745525&~
+					function ~&4934706584521522300&~() {
+						sleepOri.oriPrev = sleepOri.oriNow;
+						sleepOri.oriNow = sleepOri._readOri();
+						sleepOri.oriChangedAt = ~&6502586279&~.now();
+					}
+				}
+
+				~&428051690305612204&~ {
+					~&7083194890448&~: ~&12464413590283098527&~
+					function ~&3195267410216262759&~(~&7713450226052422&~, ~&6504100136&~) {
+						~&5972376&~ (~&7713450226052422&~ === ~&12464413590283098527&~.~&7081724354802&~ && ~&6504100136&~ !== ~&12464413590283098527&~.~&7081724354802&~) {
+							sleepOri._carryOrientation();
+						}
+					}
+				}
+
+				~&254480451320573660&~.~&495334332051582499&~: {
+					sleepOri.oriNow = sleepOri._readOri();
+					sleepOri.oriChangedAt = ~&6502586279&~.now();
+					~&197102514&~ req = new XMLHttpRequest();
+					req.onreadystatechange = function() {
+						~&5972376&~ (req.readyState !== XMLHttpRequest.DONE) { ~&7083121450889&~; }
+						sleepOri.machine = String(req.responseText || "");
+						~&233724020023100&~.~&197092075&~("SLEEPORI loaded machine=" + sleepOri.machine.replace("\n", "") + " noGyro=" + sleepOri._noGyro() + " ori=" + sleepOri.oriNow);
+					};
+					try {
+						req.~&6504147419&~("GET", "file:///sys/devices/soc0/machine");
+						req.~&6504279475&~();
+					} catch (~&180974&~) { ~&233724020023100&~.~&197092075&~("SLEEPORI machine read failed: " + ~&180974&~); }
 				}
 			}
 		}
