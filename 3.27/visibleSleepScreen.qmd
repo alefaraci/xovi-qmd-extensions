@@ -408,3 +408,30 @@ AFFECT [[1268416230467683501]]
 		}
 	END TRAVERSE
 END AFFECT
+
+AFFECT /qml/device/view/main/MainView.qml
+	TRAVERSE ?#rootItem
+		REPLACE visible WITH {
+			visible: BatteryManager.displayState !== BatteryManager.DeepSleep
+				|| Settings.lightSleepEnabled === true
+		}
+		REPLACE Connections[.target=BatteryManager] WITH {
+			Connections {
+				target: BatteryManager
+
+				function onDisplayStateChanged(previous, next) {
+					let isAwake = next === BatteryManager.Normal;
+					let wasAwake = previous === BatteryManager.Normal;
+
+					if (isAwake !== wasAwake) {
+						var vcOn = false;
+						try { vcOn = (Settings.lightSleepEnabled === true); } catch (e) { vcOn = false; }
+						if (isAwake || !vcOn) {
+							EPFramebuffer.scheduleGhostRemoval();
+						}
+					}
+				}
+			}
+		}
+	END TRAVERSE
+END AFFECT
