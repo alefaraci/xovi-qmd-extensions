@@ -144,8 +144,8 @@ The mod is customizable via the dedicated **Settings ▸ Dictionary** page. Here
 ### VisibleSleepScreen
 [![vellum](https://img.shields.io/badge/vellum-visible--sleep--screen-6ed2ff?style=flat-square)](https://vellum.delivery/#/package/visible-sleep-screen/)
 
-It sets visible content as sleep screen when "Visible content" is ON. It renders the stock screen when "Visible content" is OFF. 
-
+It sets visible content as sleep screen when "Visible content" (Settings ▸ Display ▸ "Visible content") is ON. It renders the stock screen when "Visible content" is OFF. 
+  
 | <img src="./assets/Visible Sleep Screen.png" width="425"> |
 |:--:|
 
