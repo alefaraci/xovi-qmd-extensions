@@ -41,6 +41,7 @@ ssh  root@10.11.99.1 'systemctl restart xochitl'
 | [**linkFromSelection.qmd**](#linkfromselection) | On-page **links** from a lasso selection: tap to jump to a page in the current document or to another document; long-press to edit/delete the link |
 | [**navHistory.qmd**](#navhistory) | **Page Back & Forward navigation** through visited-page history, via quick-browse arrow buttons or 5-finger swipes |
 | [**dictionaryWikiTranslator.qmd**](#dictionary) | Adds integrated dictionary, Wikipedia, and translation capabilities for PDFs and EPUBs. Configurable from: **Settings ▸ Dictionary**|
+| [**visibleSleepScreen.qmd**](#visiblesleepscreen) | Sets visible content as sleep screen when "Visible content" is ON.|
 | [**forceWideColumn.qmd**](#forcewidecolumn) | Forces every note's typed text to the **Wide column** on open, including existing notes |
 | [**fasterPageLabels.qmd**](#fasterpagelabels) | Auto-hides the page-number label ~1.25 s after a page turn |
 | [**fasterScrollBar.qmd**](#fasterscrollbar) | Auto-hides the document scrollbar ~0.35 s after you stop scrolling |
