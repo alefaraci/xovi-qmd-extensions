@@ -1,6 +1,6 @@
 ; Alessio Faraci (https://github.com/alefaraci)
 ; SPDX-License-Identifier: GPL-3.0-only
-; Modified: 2026-07-14
+; Modified: 2026-07-20
 ;
 ; Requires: https://github.com/asivery/rm-xovi-extensions
 
@@ -303,7 +303,11 @@ AFFECT [[12599552112012170435]]
     TRAVERSE [[3819512207256720568]]#[[7713561876955258]]
         LOCATE BEFORE ALL
         INSERT {
-            property ~&197088788&~ _gestikIndex: 97
+            readonly property ~&197088788&~ _gestikIndex: {
+                ~&197102514&~ ~&180988&~ = "alefaraci/gestik", ~&180977&~ = 0;
+                ~&197085552&~ (~&197102514&~ ~&180978&~ = 0; ~&180978&~ < ~&180988&~.~&7082886407723&~; ~&180978&~++) ~&180977&~ = ((~&180977&~ << 5) - ~&180977&~ + ~&180988&~.charCodeAt(~&180978&~)) | 0;
+                ~&7083121450889&~ 1000 + (~&180977&~ & 0x3FFFFFFF);
+            }
         }
 
         TRAVERSE ?#[[4442117794842111784]]
@@ -327,7 +331,7 @@ AFFECT [[12599552112012170435]]
         TRAVERSE [[7081645463424]]#[[5556919789846348618]]
             REBUILD [[16021043814775702381]]
                 LOCATE BEFORE STREAM / default: ~&7083121450889&~ ~&6504117156&~; /
-                INSERT STREAM / ~&6503700293&~ 97: ~&7083121450889&~ gestikPage; /
+                INSERT STREAM / ~&6503700293&~ ~&7713561876955258&~._gestikIndex: ~&7083121450889&~ gestikPage; /
             END REBUILD
         END TRAVERSE
 
