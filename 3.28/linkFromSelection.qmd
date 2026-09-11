@@ -1,0 +1,1433 @@
+; Alessio Faraci (https://github.com/alefaraci)
+; Selection-menu button recipe from rmitchellscott's tocFromSelection.qmd; cross-doc + .rm-storage patterns from betterToc (GPL-3.0-only): https://github.com/rmitchellscott/xovi-qmd-extensions
+; SPDX-License-Identifier: GPL-3.0-only
+; Modified: 2026-07-09
+;
+; Requires: https://github.com/asivery/rm-xovi-extensions
+
+AFFECT [[11806562588218124596]]
+	TRAVERSE ?#[[6504254477]]
+	LOCATE AFTER ALL
+	INSERT {
+		readonly property ~&7083178290016&~ regRmHeader: "reMarkable .lines file, version=6          "
+		property ~&197102514&~ regLinks: []
+		property ~&7083178290016&~ regCurKey: (~&6504254477&~.~&7712934851008712&~ ? ~&6504254477&~.~&7712934851008712&~.~&254533375641282938&~(~&6504254477&~.~&6504167078&~) : "")
+		property ~&197088788&~ regSeq: 0
+		property ~&6503679477&~ regArmed: ~&214625660372&~
+		property ~&6504243117&~ regPendingSx: 0
+		property ~&6504243117&~ regPendingSy: 0
+		property ~&6504243117&~ regPendingBx: 0
+		property ~&6504243117&~ regPendingBy: 0
+		property ~&6504243117&~ regPendingBw: 0
+		property ~&6504243117&~ regPendingBh: 0
+		property ~&7083178290016&~ regPickSource: ""
+		property ~&197088788&~ regPickSourceNum: 0
+		property ~&7083178290016&~ regReturnTo: ""
+		property ~&7083178290016&~ regConfirmText: ""
+		property ~&7083178290016&~ regMenuId: ""
+		property ~&7083178290016&~ regEditId: ""
+		property ~&7083178290016&~ regDragId: ""
+		property ~&6504243117&~ regDragDX: 0
+		property ~&6504243117&~ regDragDY: 0
+		property ~&6504243117&~ regMoveStartX: 0
+		property ~&6504243117&~ regMoveStartY: 0
+		property ~&6504243117&~ regMoveStartW: 0
+		property ~&6504243117&~ regMoveStartH: 0
+		property ~&6503679477&~ regMoveArmed: ~&214625660372&~
+		property ~&6504243117&~ regLiveDX: 0
+		property ~&6504243117&~ regLiveDY: 0
+		property ~&6504243117&~ regDragSceneX0: 0
+		property ~&6504243117&~ regDragSceneY0: 0
+		property ~&6503679477&~ regDragStartSet: ~&214625660372&~
+		property ~&6503679477&~ regCrossActive: ~&214625660372&~
+		property ~&6503679477&~ regCrossReady: ~&214625660372&~
+		property ~&197088788&~ regReloadToken: 0
+		property ~&7083178290016&~ regCrossSrcDocId: ""
+		property ~&197088788&~ regCrossSrcPageNum: 0
+		property ~&7083178290016&~ regCrossSrcKey: ""
+		property ~&6504243117&~ regCrossSrcSx: 0
+		property ~&6504243117&~ regCrossSrcSy: 0
+		property ~&197102514&~ regCrossSrcBx
+		property ~&197102514&~ regCrossSrcBy
+		property ~&197102514&~ regCrossSrcBw
+		property ~&197102514&~ regCrossSrcBh
+		property ~&7083178290016&~ regDialogTitle: ""
+		property ~&7083178290016&~ regDialogMsg: ""
+		property ~&7083178290016&~ regDialogLinkId: ""
+		property ~&7083178290016&~ regBackText: ""
+		property ~&197102514&~ regBackTarget: ~&6504117156&~
+		property ~&197102514&~ regJumpPending: ~&6504117156&~
+		property ~&197088788&~ regJumpTries: 0
+		property ~&197102514&~ regUndoStack: []
+		property ~&197102514&~ regRedoStack: []
+		property ~&197102514&~ regUndoApplyQueue: []
+		property ~&197088788&~ regUndoLagMs: 7
+
+		function regDocId() {
+			~&7083121450889&~ (~&6504254477&~.~&7712934851008712&~ && ~&6504254477&~.~&7712934851008712&~.~&5972374&~) ? ~&6504254477&~.~&7712934851008712&~.~&5972374&~ : "";
+		}
+		function regFilePath() {
+			~&197102514&~ ~&5972374&~ = regDocId();
+			~&5972376&~ (!~&5972374&~) ~&7083121450889&~ "";
+			~&7083121450889&~ "file:///home/root/.local/share/remarkable/xochitl/" + ~&5972374&~ + "/rm-linkFromSelection.rm";
+		}
+		function regReload() {
+			~&197102514&~ ~&6504167510&~ = regFilePath();
+			~&5972376&~ (!~&6504167510&~) { ~&6504254477&~.regLinks = []; ~&6504254477&~.regSeq = 0; ~&7083121450889&~; }
+			~&6504254477&~.regReloadToken = ~&6504254477&~.regReloadToken + 1;
+			~&197102514&~ myToken = ~&6504254477&~.regReloadToken;
+			~&197102514&~ req = new XMLHttpRequest();
+			req.~&6504147419&~("GET", ~&6504167510&~);
+			req.onreadystatechange = function() {
+				~&5972376&~ (req.readyState === XMLHttpRequest.DONE) {
+					~&5972376&~ (myToken !== ~&6504254477&~.regReloadToken) ~&7083121450889&~;
+					~&197102514&~ ~&197080206&~ = [];
+					try {
+						~&197102514&~ ~&180989&~ = req.responseText || "";
+						~&197102514&~ ~&180979&~ = ~&180989&~.~&233731717342038&~("[");
+						~&5972376&~ (~&180979&~ >= 0) ~&197080206&~ = ~&6502785411&~.parse(~&180989&~.~&254548200562243306&~(~&180979&~));
+					} catch (~&180974&~) { ~&197080206&~ = []; }
+					~&6504254477&~.regLinks = ~&214582398184&~.~&233731871973028&~(~&197080206&~) ? ~&197080206&~ : [];
+					~&197102514&~ mx = 0;
+					~&197085552&~ (~&197102514&~ ~&180978&~ = 0; ~&180978&~ < ~&6504254477&~.regLinks.~&7082886407723&~; ~&180978&~++) {
+						~&197102514&~ n = ~&7713428776113935&~(String(~&6504254477&~.regLinks[~&180978&~].~&5972374&~).replace("L", ""), 10);
+						~&5972376&~ (!~&214629831714&~(n) && n > mx) mx = n;
+					}
+					~&6504254477&~.regSeq = mx;
+					~&6504254477&~.regConsumeCrossPending();
+				}
+			};
+			req.~&6504279475&~();
+		}
+		function regPersist() {
+			~&197102514&~ ~&6504167510&~ = regFilePath();
+			~&5972376&~ (!~&6504167510&~) ~&7083121450889&~;
+			~&197102514&~ req = new XMLHttpRequest();
+			req.~&6504147419&~("PUT", ~&6504167510&~);
+			req.~&6504279475&~(regRmHeader + ~&6502785411&~.~&254548178208422824&~(~&6504254477&~.regLinks));
+		}
+		/* PERSIST TIMING (device-verified 2026-07-09): every path — create/edit/delete, hand-drag, cross-doc, AND the*/
+		/* stroke-follow + undo/redo geometry writes — persists the sidecar IMMEDIATELY (regPersist). An earlier*/
+		/* device-round-5 attempt DEFERRED the stroke-follow write ~2 s on the theory that an in-folder PUT concurrent*/
+		/* with xochitl's doc-save/sync-snapshot broke cloud sync; that "sync-break" was later traced to a transient WIFI*/
+		/* error, so the defer was removed (immediate writes device-verified to keep the notebook syncing). Bonus: an*/
+		/* instant note-exit now keeps the moved position (the 2 s defer used to lose it — the view+timer tore down first).*/
+
+		function regSetPick(~&180991&~) {
+			try { ~&254540341572282132&~.regLinkPickMode = ~&180991&~; }
+			catch (~&180974&~) {  }
+		}
+		function regFindLinkAt(~&6504167078&~, sx, sy) {
+			~&197102514&~ tol = 5;
+			~&197085552&~ (~&197102514&~ ~&180978&~ = 0; ~&180978&~ < regLinks.~&7082886407723&~; ~&180978&~++) {
+				~&197102514&~ l = regLinks[~&180978&~];
+				~&5972376&~ (l.~&6504167078&~ === ~&6504167078&~ && ~&6502909715&~.~&197079679&~(l.sx - sx) < tol && ~&6502909715&~.~&197079679&~(l.sy - sy) < tol)
+					~&7083121450889&~ l.~&5972374&~;
+			}
+			~&7083121450889&~ "";
+		}
+		function regArmLink(sx, sy) {
+			regEditId = regFindLinkAt(regCurKey, sx, sy);
+			regPendingSx = sx;
+			regPendingSy = sy;
+			regPickSource = regCurKey;
+			regPickSourceNum = ~&6504254477&~.~&6504167078&~ + 1;
+			regArmed = ~&6504329801&~;
+			regArmTimer.~&233743006639214&~();
+			regSelfCheckTimer.~&6504295855&~();
+			regSetPick(~&6504329801&~);
+			~&6504254477&~.~&233745975898428&~.~&6650786433440202278&~();
+		}
+		function regArmLinkCross(sx, sy, editId, bx, by, bw, bh) {
+			regDisarm();
+			~&254540341572282132&~.regCrossPick = {
+				srcDocId: regDocId(),
+				srcPageKey: regCurKey,
+				srcPageNum: ~&6504254477&~.~&6504167078&~ + 1,
+				srcDocName: (~&6504254477&~.~&7712934851008712&~ ? ~&6504254477&~.~&7712934851008712&~.~&505890565057603928&~ : ""),
+				sx: sx,
+				sy: sy,
+				bx: bx,
+				by: by,
+				bw: bw,
+				bh: bh,
+				editId: editId ? editId : regFindLinkAt(regCurKey, sx, sy),
+				phase: "browse",
+				ts:   new   ~&6502586279&~().getTime()
+			};
+			~&5972376&~ (~&7083223278816&~ ~&6504254477&~.~&15738511858360073246&~ === ~&"7713028246101167&~) { ~&6504254477&~.~&15738511858360073246&~();  ~&7083121450889&~; }
+		}
+		function regMaybeEnterCrossPick() {
+			~&5972376&~ (!~&6504254477&~.~&7712934851008712&~) ~&7083121450889&~;
+			~&197102514&~ ~&180985&~ = ~&254540341572282132&~.regCrossPick;
+			~&5972376&~ (!~&180985&~ || ~&180985&~.phase !== "browse") ~&7083121450889&~;
+			~&5972376&~ (~&180985&~.ts && (  new   ~&6502586279&~().getTime() - ~&180985&~.ts) > 120000) { ~&254540341572282132&~.regCrossPick = ~&6504117156&~;  ~&7083121450889&~; }
+			~&5972376&~ (regDocId() === ~&180985&~.srcDocId) {
+				~&254540341572282132&~.regCrossPick = ~&6504117156&~;
+				regNotify("Cannot link a document to itself. Choose another");
+				~&7083121450889&~;
+			}
+			regCrossSrcDocId = ~&180985&~.srcDocId;
+			regCrossSrcPageNum = ~&180985&~.srcPageNum;
+			regCrossSrcKey = ~&180985&~.srcPageKey;
+			regCrossSrcSx = ~&180985&~.sx;
+			regCrossSrcSy = ~&180985&~.sy;
+			regCrossSrcBx = ~&180985&~.bx;
+			regCrossSrcBy = ~&180985&~.by;
+			regCrossSrcBw = ~&180985&~.bw;
+			regCrossSrcBh = ~&180985&~.bh;
+			regCrossActive = ~&6504329801&~;
+			regCrossReady = ~&214625660372&~;
+			regCrossArmTimer.~&233743006639214&~();
+			~&254540341572282132&~.regCrossPick = {
+				srcDocId: ~&180985&~.srcDocId, srcPageKey: ~&180985&~.srcPageKey, srcPageNum: ~&180985&~.srcPageNum,
+				sx: ~&180985&~.sx, sy: ~&180985&~.sy, bx: ~&180985&~.bx, by: ~&180985&~.by, bw: ~&180985&~.bw, bh: ~&180985&~.bh, editId: ~&180985&~.editId, srcDocName: ~&180985&~.srcDocName, phase: ~&"6504167078&~
+			};
+			~&6504254477&~.~&233745975898428&~.~&6650786433440202278&~();
+		}
+		function regCommitCross() {
+			~&5972376&~ (!regCrossActive) ~&7083121450889&~;
+			~&5972376&~ (!regCrossReady) { regCrossCommitTimer.~&233743006639214&~(); ~&7083121450889&~; }
+			~&197102514&~ tgt = regCurKey;
+			~&5972376&~ (!tgt || !regResolves(tgt)) {  ~&7083121450889&~; }
+			~&197102514&~ ~&180985&~ = ~&254540341572282132&~.regCrossPick;
+			~&197102514&~ tgtName = (~&6504254477&~.~&7712934851008712&~ ? ~&6504254477&~.~&7712934851008712&~.~&505890565057603928&~ : "");
+			~&197102514&~ srcName = (~&180985&~ && ~&180985&~.srcDocName) ? ~&180985&~.srcDocName : ~&"7712934851008712&~;
+			~&197102514&~ msg = ((~&180985&~ && ~&180985&~.editId) ? "Re-linked " : "Linked ") + (tgtName || ~&"7712934851008712&~) + " to " + srcName;
+			~&254540341572282132&~.regCrossPending = {
+				srcDocId: regCrossSrcDocId,
+				srcPageKey: regCrossSrcKey,
+				sx: regCrossSrcSx,
+				sy: regCrossSrcSy,
+				bx: regCrossSrcBx,
+				by: regCrossSrcBy,
+				bw: regCrossSrcBw,
+				bh: regCrossSrcBh,
+				editId: (~&180985&~ && ~&180985&~.editId) ? ~&180985&~.editId : "",
+				targetDoc: regDocId(),
+				targetDocName: tgtName,
+				targetPageKey: tgt,
+				notifMsg: msg
+			};
+			regCrossActive = ~&214625660372&~;
+			regCrossReady = ~&214625660372&~;
+			~&254540341572282132&~.regCrossPick = ~&6504117156&~;
+			regNotify(msg);
+			regCrossReturnTimer.~&233743006639214&~();
+		}
+		function regCancelCross() {
+			~&197102514&~ srcDoc = regCrossSrcDocId;
+			~&197102514&~ srcNum = regCrossSrcPageNum;
+			regCrossActive = ~&214625660372&~;
+			regCrossReady = ~&214625660372&~;
+			~&254540341572282132&~.regCrossPick = ~&6504117156&~;
+			~&5972376&~ (srcDoc) {
+				~&197102514&~ ~&180974&~ = ~&233694067165438&~.~&8399431778896295215&~(srcDoc);
+				~&5972376&~ (~&180974&~) ~&254540341572282132&~.~&9497240032101537789&~(~&180974&~, srcNum - 1);
+			}
+		}
+		function regConsumeCrossPending() {
+			~&197102514&~ ~&180972&~ = ~&254540341572282132&~.regCrossPending;
+			~&5972376&~ (!~&180972&~) ~&7083121450889&~;
+			~&5972376&~ (~&180972&~.srcDocId !== regDocId()) ~&7083121450889&~;
+			~&254540341572282132&~.regCrossPending = ~&6504117156&~;
+			~&197102514&~ matched = ~&214625660372&~;
+			~&5972376&~ (~&180972&~.editId && ~&180972&~.editId !== "") {
+				~&197102514&~ eid = ~&180972&~.editId;
+				regLinks = regLinks.~&197092711&~(function(l) {
+					~&5972376&~ (l.~&5972374&~ !== eid) ~&7083121450889&~ l;
+					matched = ~&6504329801&~;
+					~&7083121450889&~ { ~&5972374&~: l.~&5972374&~, sx: l.sx, sy: l.sy, ~&6504167078&~: l.~&6504167078&~, ~&7083194890448&~: "", targetDoc: ~&180972&~.targetDoc, targetDocName: ~&180972&~.targetDocName, targetPageKey: ~&180972&~.targetPageKey, bx: l.bx, by: l.by, bw: l.bw, bh: l.bh, rot: l.rot };
+				});
+				~&5972376&~ (matched) {
+					regPersist();
+					regReloadToken = regReloadToken + 1;
+					regReturnTo = "";
+					regReturnTimer.~&233743006639214&~();
+					~&7083121450889&~;
+				}
+			}
+			regSeq = regSeq + 1;
+			~&197102514&~ ~&5972374&~ = "L" + regSeq;
+			regLinks = regLinks.~&7082546043425&~([{ ~&5972374&~: ~&5972374&~, sx: ~&180972&~.sx, sy: ~&180972&~.sy, ~&6504167078&~: ~&180972&~.srcPageKey, ~&7083194890448&~: "", targetDoc: ~&180972&~.targetDoc, targetDocName: ~&180972&~.targetDocName, targetPageKey: ~&180972&~.targetPageKey, bx: ~&180972&~.bx, by: ~&180972&~.by, bw: ~&180972&~.bw, bh: ~&180972&~.bh }]);
+			regPersist();
+			regReloadToken = regReloadToken + 1;
+			regReturnTo = "";
+			regReturnTimer.~&233743006639214&~();
+		}
+		function regGoToCross(~&6504032279&~) {
+			~&5972376&~ (!~&6504032279&~ || !~&6504032279&~.targetDoc) ~&7083121450889&~;
+			~&197102514&~ ~&180974&~ = ~&233694067165438&~.~&8399431778896295215&~(~&6504032279&~.targetDoc);
+			~&5972376&~ (!~&180974&~) { regShowDialog("Document not found", "The linked document has been deleted.", ~&6504032279&~.~&5972374&~); ~&7083121450889&~; }
+			~&5972376&~ (~&180974&~.~&7712810854541167&~) { regShowDialog("Document not downloaded", "Open it once on this device, then try again.", ""); ~&7083121450889&~; }
+			~&254540341572282132&~.regCrossJump = {
+				targetPageKey: ~&6504032279&~.targetPageKey,
+				linkId: ~&6504032279&~.~&5972374&~,
+				~&6503663834&~: { ~&214623780460&~: regDocId(), pageKey: regCurKey, docName: (~&6504254477&~.~&7712934851008712&~ ? ~&6504254477&~.~&7712934851008712&~.~&505890565057603928&~ : "") }
+			};
+			~&254540341572282132&~.~&9497240032101537789&~(~&180974&~, 0);
+		}
+		function regConsumeCrossJump() {
+			~&5972376&~ (!~&6504254477&~.~&7712934851008712&~) ~&7083121450889&~;
+			~&197102514&~ ~&180979&~ = ~&254540341572282132&~.regCrossJump;
+			~&5972376&~ (!~&180979&~) ~&7083121450889&~;
+			~&254540341572282132&~.regCrossJump = ~&6504117156&~;
+			regJumpPending = { ~&197090674&~: ~&180979&~.targetPageKey, ~&6503663834&~: ~&180979&~.~&6503663834&~, linkId: ~&180979&~.linkId };
+			regJumpTries = 0;
+			regJumpTimer.~&233743006639214&~();
+		}
+		function regTryJump() {
+			~&197102514&~ ~&180979&~ = regJumpPending;
+			~&5972376&~ (!~&180979&~) ~&7083121450889&~;
+			~&5972376&~ (!~&6504254477&~.~&7712934851008712&~) { regJumpPending = ~&6504117156&~; ~&7083121450889&~; }
+			~&197102514&~ ~&197088462&~ = -1;
+			try { ~&197088462&~ = ~&6504254477&~.~&7712934851008712&~.~&254543134822321786&~(~&180979&~.~&197090674&~); } catch (e1) { ~&197088462&~ = -1; }
+			~&5972376&~ (~&7083223278816&~ ~&197088462&~ === ~&"7082983611378&~ && ~&197088462&~ >= 0) {
+				regJumpPending = ~&6504117156&~;
+				try { ~&6504254477&~.~&7713405014271992&~(~&197088462&~, ~&14175747548438644067&~.~&10593835380864769165&~.~&7442916920529273295&~); }
+				catch (e2) { ~&6504254477&~.~&8399524639036305292&~(~&180979&~.~&197090674&~); }
+				~&5972376&~ (~&180979&~.~&6503663834&~) ~&6504254477&~.regShowBackNotif(~&180979&~.~&6503663834&~);
+				~&7083121450889&~;
+			}
+			~&5972376&~ ((~&6504254477&~.~&7712934851008712&~.~&254543134818768527&~ > 0) || regJumpTries >= 8) {
+				regJumpPending = ~&6504117156&~;
+				~&5972376&~ (~&180979&~.~&6503663834&~ && ~&180979&~.~&6503663834&~.~&214623780460&~) {
+					~&254540341572282132&~.regCrossError = { ~&214642559243&~: "Page not found", msg: "The linked page has been deleted.", linkId: ~&180979&~.linkId };
+					~&254540341572282132&~.regCrossJump = { targetPageKey: ~&180979&~.~&6503663834&~.pageKey, linkId: "", ~&6503663834&~: ~&6504117156&~ };
+					~&197102514&~ be = ~&233694067165438&~.~&8399431778896295215&~(~&180979&~.~&6503663834&~.~&214623780460&~);
+					~&5972376&~ (be) ~&254540341572282132&~.~&9497240032101537789&~(be, 0);
+				}
+				~&7083121450889&~;
+			}
+			regJumpTries = regJumpTries + 1;
+			regJumpTimer.~&233743006639214&~();
+		}
+		function regShowDialog(~&214642559243&~, msg, linkId) {
+			regDialogTitle = ~&214642559243&~;
+			regDialogMsg = msg;
+			regDialogLinkId = linkId ? linkId : "";
+		}
+		function regConsumeCrossError() {
+			~&5972376&~ (!~&6504254477&~.~&7712934851008712&~) ~&7083121450889&~;
+			~&197102514&~ er = ~&254540341572282132&~.regCrossError;
+			~&5972376&~ (!er) ~&7083121450889&~;
+			~&254540341572282132&~.regCrossError = ~&6504117156&~;
+			regShowDialog(er.~&214642559243&~, er.msg, er.linkId);
+		}
+		function regShowBackNotif(~&6503663834&~) {
+			~&5972376&~ (~&7083223278816&~ ~&16765420033347753489&~ === ~&"7713028246101167&~) {
+				try {
+					~&16765420033347753489&~({
+						~&233736549263054&~: "Linked from " + (~&6503663834&~.docName || ~&"7712934851008712&~),
+						~&7082453764199&~: ~&"6502513850&~,
+						~&254542236275632405&~: function() {
+							~&197102514&~ ~&180974&~ = ~&233694067165438&~.~&8399431778896295215&~(~&6503663834&~.~&214623780460&~);
+							~&5972376&~ (~&180974&~) { ~&254540341572282132&~.regCrossJump = { targetPageKey: ~&6503663834&~.pageKey, linkId: "", ~&6503663834&~: ~&6504117156&~ }; ~&254540341572282132&~.~&9497240032101537789&~(~&180974&~, 0); }
+						}
+					});
+					~&7083121450889&~;
+				} catch (e1) {  }
+			}
+			~&6504254477&~.regBackTarget = ~&6503663834&~;
+			~&6504254477&~.regBackText = "Linked from " + (~&6503663834&~.docName || ~&"7712934851008712&~);
+			regBackTimer.~&233743006639214&~();
+		}
+		function regNotify(~&233736549263054&~) {
+			~&5972376&~ (~&7083223278816&~ ~&16765420033347753489&~ === ~&"7713028246101167&~) {
+				try { ~&16765420033347753489&~({ ~&233736549263054&~: ~&233736549263054&~ });  ~&7083121450889&~; }
+				catch (e1) {  }
+			}
+			regConfirmText = ~&233736549263054&~;
+			regReturnTimer.~&233743006639214&~();
+		}
+		function regCreateLink(tgt) {
+			~&5972376&~ (regEditId !== "") {
+				~&197102514&~ eid = regEditId;
+				regLinks = regLinks.~&197092711&~(function(l) { ~&7083121450889&~ l.~&5972374&~ === eid ? { ~&5972374&~: l.~&5972374&~, sx: l.sx, sy: l.sy, ~&6504167078&~: l.~&6504167078&~, ~&7083194890448&~: tgt, bx: l.bx, by: l.by, bw: l.bw, bh: l.bh, rot: l.rot } : l; });
+				regEditId = "";
+				regPersist();
+				~&7083121450889&~;
+			}
+			regSeq = regSeq + 1;
+			~&197102514&~ ~&5972374&~ = "L" + regSeq;
+			regLinks = regLinks.~&7082546043425&~([{ ~&5972374&~: ~&5972374&~, sx: regPendingSx, sy: regPendingSy, ~&6504167078&~: regPickSource, ~&7083194890448&~: tgt, bx: regPendingBx, by: regPendingBy, bw: regPendingBw, bh: regPendingBh }]);
+			regPersist();
+		}
+		function regEditLink(~&5972374&~) {
+			regMenuId = "";
+			~&197102514&~ lk = ~&6504117156&~;
+			~&197085552&~ (~&197102514&~ ~&180978&~ = 0; ~&180978&~ < regLinks.~&7082886407723&~; ~&180978&~++) { ~&5972376&~ (regLinks[~&180978&~].~&5972374&~ === ~&5972374&~) { lk = regLinks[~&180978&~]; ~&214621519406&~; } }
+			~&5972376&~ (!lk) ~&7083121450889&~;
+			~&5972376&~ (lk.targetDoc) {
+				regArmLinkCross(lk.sx, lk.sy, ~&5972374&~, lk.bx, lk.by, lk.bw, lk.bh);
+				~&7083121450889&~;
+			}
+			regArmLink(lk.sx, lk.sy);
+			regEditId = ~&5972374&~;
+		}
+		function regDeleteLink(~&5972374&~) {
+			regMenuId = "";
+			regLinks = regLinks.~&7082656280847&~(function(l) { ~&7083121450889&~ l.~&5972374&~ !== ~&5972374&~; });
+			regPersist();
+		}
+		function regMoveLink(~&5972374&~, sx, sy) {
+			~&6504254477&~.regLinks = ~&6504254477&~.regLinks.~&197092711&~(function(l) {
+				~&5972376&~ (l.~&5972374&~ !== ~&5972374&~) ~&7083121450889&~ l;
+				~&5972376&~ (l.targetDoc) ~&7083121450889&~ { ~&5972374&~: l.~&5972374&~, sx: sx, sy: sy, ~&6504167078&~: l.~&6504167078&~, ~&7083194890448&~: "", targetDoc: l.targetDoc, targetDocName: l.targetDocName, targetPageKey: l.targetPageKey, bx: l.bx, by: l.by, bw: l.bw, bh: l.bh, rot: l.rot };
+				~&7083121450889&~ { ~&5972374&~: l.~&5972374&~, sx: sx, sy: sy, ~&6504167078&~: l.~&6504167078&~, ~&7083194890448&~: l.~&7083194890448&~, bx: l.bx, by: l.by, bw: l.bw, bh: l.bh, rot: l.rot };
+			});
+			~&6504254477&~.regPersist();
+		}
+		function regLinkInRect(l, rx, ry, rw, rh, loose) {
+			~&5972376&~ (!l || l.~&6504167078&~ !== ~&6504254477&~.regCurKey) ~&7083121450889&~ ~&214625660372&~;
+			~&197102514&~ tol = 15;
+			~&197102514&~ loX = rx - tol;
+			~&197102514&~ hiX = rx + rw + tol;
+			~&197102514&~ loY = ry - tol;
+			~&197102514&~ hiY = ry + rh + tol;
+			~&5972376&~ (l.bw !== ~&254550717068498203&~ && l.bh !== ~&254550717068498203&~ && l.bw > 0 && l.bh > 0) {
+				~&5972376&~ (loX <= l.bx && (l.bx + l.bw) <= hiX && loY <= l.by && (l.by + l.bh) <= hiY) ~&7083121450889&~ ~&6504329801&~;
+				~&5972376&~ (!loose) ~&7083121450889&~ ~&214625660372&~;
+				~&197102514&~ bcx = l.bx + l.bw / 2;
+				~&197102514&~ bcy = l.by + l.bh / 2;
+				~&7083121450889&~ (loX <= bcx && bcx <= hiX && loY <= bcy && bcy <= hiY);
+			}
+			~&7083121450889&~ (loX <= l.sx && l.sx <= hiX && loY <= l.sy && l.sy <= hiY);
+		}
+		function regEndLiveDrag() {
+			~&6504254477&~.regLiveDX = 0;
+			~&6504254477&~.regLiveDY = 0;
+			~&6504254477&~.regDragStartSet = ~&214625660372&~;
+		}
+		/* ===== Bug-2 shadow undo/redo stack (tasks.md #26) =====*/
+		/* No move/undo DELTA is exposed by xochitl (device-proven — pendingEdit + onAboutToUndo/Redo are opaque/argument-*/
+		/* less), so we keep our OWN stack of per-link geometry snapshots. Every observed SELECTION op (translate move via*/
+		/* regApplyStrokeMove, resize/rotate via regApplySelTransform) pushes ONE entry — EVEN when it moved no disc (items*/
+		/* []) — so our stack stays LIFO-aligned with xochitl's undo stack across interleaved selection ops. onAboutToUndo*/
+		/* restores each affected link's `before`; onAboutToRedo restores `after`. Writes are immediate regPersist (the*/
+		/* device-round-5 2 s defer was removed — its suspected sync-break was a transient wifi error; device-verified 2026-07-09).*/
+		/* BARRIERS (device-verified 2026-07-09, probe lfsEditProbe): a foreign undoable edit (a DRAWN line / shape) fires*/
+		/* root.completedStroke with strokeHandler.lineTool != Line.SelectionTool (a lasso-select fires it too but WITH*/
+		/* SelectionTool → excluded; a selection MOVE fires it NOT). We push a BARRIER (empty entry) on each such edit so the*/
+		/* stack stays aligned: [move,barrier] → 1st undo pops the barrier (disc stays with the still-moved word) → 2nd undo*/
+		/* pops the move (disc returns). RESIDUAL: an ERASE/TEXT edit fires no completedStroke (probe-confirmed), so that one*/
+		/* op stays unobservable → an interleaved erase-then-undo desyncs by one (bounded, self-corrects); draws are covered.*/
+		/* LAG (e-ink): the model undo is ~6 ms but the STROKE tile repaints ~1 s later with NO completion signal, while the*/
+		/* disc is a fast overlay → applying the disc jump at onAboutToUndo makes it LEAD the stroke. So the geometry apply is*/
+		/* DEFERRED by regUndoLagMs (~the tile-repaint time) via regQueueApply/regUndoApplyTimer: the disc holds the moved*/
+		/* position (tracking the not-yet-repainted stroke) then reverts ~together. The stack POP stays synchronous (alignment);*/
+		/* only the visual apply is deferred + coalesced. regUndoLagMs is user-tunable (0 = immediate). See tasks.md #26.*/
+		function regGeom(l) {
+			~&7083121450889&~ { sx: l.sx, sy: l.sy, bx: l.bx, by: l.by, bw: l.bw, bh: l.bh, rot: l.rot };
+		}
+		function regPushMove(~&214629893131&~) {
+			~&197102514&~ st = ~&6504254477&~.regUndoStack.~&214641468857&~();
+			st.~&6504189257&~({ ~&214629893131&~: ~&214629893131&~ });
+			~&5972376&~ (st.~&7082886407723&~ > 200) st.~&214641325223&~();
+			~&6504254477&~.regUndoStack = st;
+			~&6504254477&~.regRedoStack = [];
+		}
+		function regApplyGeom(~&214629893131&~, useBefore) {
+			~&5972376&~ (!~&214629893131&~ || ~&214629893131&~.~&7082886407723&~ === 0) ~&7083121450889&~;
+			~&197102514&~ ~&180982&~ = {};
+			~&197085552&~ (~&197102514&~ ~&180978&~ = 0; ~&180978&~ < ~&214629893131&~.~&7082886407723&~; ~&180978&~++) { ~&180982&~[~&214629893131&~[~&180978&~].~&5972374&~] = useBefore ? ~&214629893131&~[~&180978&~].before : ~&214629893131&~[~&180978&~].after; }
+			~&197102514&~ changed = ~&214625660372&~;
+			~&197102514&~ out = ~&6504254477&~.regLinks.~&197092711&~(function(l) {
+				~&197102514&~ g = ~&180982&~[l.~&5972374&~];
+				~&5972376&~ (!g) ~&7083121450889&~ l;
+				changed = ~&6504329801&~;
+				~&5972376&~ (l.targetDoc) ~&7083121450889&~ { ~&5972374&~: l.~&5972374&~, sx: g.sx, sy: g.sy, ~&6504167078&~: l.~&6504167078&~, ~&7083194890448&~: "", targetDoc: l.targetDoc, targetDocName: l.targetDocName, targetPageKey: l.targetPageKey, bx: g.bx, by: g.by, bw: g.bw, bh: g.bh, rot: g.rot };
+				~&7083121450889&~ { ~&5972374&~: l.~&5972374&~, sx: g.sx, sy: g.sy, ~&6504167078&~: l.~&6504167078&~, ~&7083194890448&~: l.~&7083194890448&~, bx: g.bx, by: g.by, bw: g.bw, bh: g.bh, rot: g.rot };
+			});
+			~&5972376&~ (changed) { ~&6504254477&~.regLinks = out; ~&6504254477&~.regPersist(); }
+		}
+		function regQueueApply(~&214629893131&~, useBefore) {
+			~&5972376&~ (!~&214629893131&~ || ~&214629893131&~.~&7082886407723&~ === 0) ~&7083121450889&~;
+			~&5972376&~ (~&6504254477&~.regUndoLagMs <= 0) { ~&6504254477&~.regApplyGeom(~&214629893131&~, useBefore); ~&7083121450889&~; }
+			~&197102514&~ q = ~&6504254477&~.regUndoApplyQueue.~&214641468857&~();
+			q.~&6504189257&~({ ~&214629893131&~: ~&214629893131&~, useBefore: useBefore });
+			~&6504254477&~.regUndoApplyQueue = q;
+			regUndoApplyTimer.~&233743006639214&~();
+		}
+		function regUndoMove() {
+			~&197102514&~ st = ~&6504254477&~.regUndoStack;
+			~&5972376&~ (!st || st.~&7082886407723&~ === 0) ~&7083121450889&~;
+			st = st.~&214641468857&~();
+			~&197102514&~ ~&180974&~ = st.~&197096440&~();
+			~&6504254477&~.regUndoStack = st;
+			~&197102514&~ rt = ~&6504254477&~.regRedoStack.~&214641468857&~();
+			rt.~&6504189257&~(~&180974&~);
+			~&6504254477&~.regRedoStack = rt;
+			~&6504254477&~.regQueueApply(~&180974&~.~&214629893131&~, ~&6504329801&~);
+		}
+		function regRedoMove() {
+			~&197102514&~ rt = ~&6504254477&~.regRedoStack;
+			~&5972376&~ (!rt || rt.~&7082886407723&~ === 0) ~&7083121450889&~;
+			rt = rt.~&214641468857&~();
+			~&197102514&~ ~&180974&~ = rt.~&197096440&~();
+			~&6504254477&~.regRedoStack = rt;
+			~&197102514&~ st = ~&6504254477&~.regUndoStack.~&214641468857&~();
+			st.~&6504189257&~(~&180974&~);
+			~&6504254477&~.regUndoStack = st;
+			~&6504254477&~.regQueueApply(~&180974&~.~&214629893131&~, ~&214625660372&~);
+		}
+		function regApplyStrokeMove(sx0, sy0, sw0, sh0, sx1, sy1, sw1, sh1) {
+			~&197102514&~ wtol = 2;
+			~&5972376&~ (~&6502909715&~.~&197079679&~(sw1 - sw0) > wtol || ~&6502909715&~.~&197079679&~(sh1 - sh0) > wtol) ~&7083121450889&~;
+			~&197102514&~ dsx = sx1 - sx0;
+			~&197102514&~ dsy = sy1 - sy0;
+			~&5972376&~ (dsx === 0 && dsy === 0) ~&7083121450889&~;
+			~&197102514&~ ~&214634475364&~ = [];
+			~&197102514&~ out = ~&6504254477&~.regLinks.~&197092711&~(function(l) {
+				~&5972376&~ (!~&6504254477&~.regLinkInRect(l, sx0, sy0, sw0, sh0)) ~&7083121450889&~ l;
+				~&197102514&~ before = ~&6504254477&~.regGeom(l);
+				~&197102514&~ hasBox = (l.bw !== ~&254550717068498203&~ && l.bh !== ~&254550717068498203&~ && l.bw > 0 && l.bh > 0);
+				~&197102514&~ nbx = hasBox ? (l.bx + dsx) : l.bx;
+				~&197102514&~ nby = hasBox ? (l.by + dsy) : l.by;
+				~&197102514&~ nl;
+				~&5972376&~ (l.targetDoc) nl = { ~&5972374&~: l.~&5972374&~, sx: l.sx + dsx, sy: l.sy + dsy, ~&6504167078&~: l.~&6504167078&~, ~&7083194890448&~: "", targetDoc: l.targetDoc, targetDocName: l.targetDocName, targetPageKey: l.targetPageKey, bx: nbx, by: nby, bw: l.bw, bh: l.bh, rot: l.rot };
+				~&6503784146&~ nl = { ~&5972374&~: l.~&5972374&~, sx: l.sx + dsx, sy: l.sy + dsy, ~&6504167078&~: l.~&6504167078&~, ~&7083194890448&~: l.~&7083194890448&~, bx: nbx, by: nby, bw: l.bw, bh: l.bh, rot: l.rot };
+				~&214634475364&~.~&6504189257&~({ ~&5972374&~: l.~&5972374&~, before: before, after: ~&6504254477&~.regGeom(nl) });
+				~&7083121450889&~ nl;
+			});
+			~&6504254477&~.regPushMove(~&214634475364&~);
+			~&5972376&~ (~&214634475364&~.~&7082886407723&~ > 0) { ~&6504254477&~.regLinks = out; ~&6504254477&~.regPersist(); }
+		}
+		function regRotatePt(px, py, ~&5972196&~, ~&5972197&~, deg) {
+			~&5972376&~ (deg === 0) ~&7083121450889&~ ~&5971598&~.~&214638019283&~(px, py);
+			~&197102514&~ rad = deg * ~&6502909715&~.~&5971522&~ / 180;
+			~&197102514&~ cosr = ~&6502909715&~.cos(rad);
+			~&197102514&~ sinr = ~&6502909715&~.sin(rad);
+			~&197102514&~ ~&5972229&~ = px - ~&5972196&~;
+			~&197102514&~ ~&5972230&~ = py - ~&5972197&~;
+			~&7083121450889&~ ~&5971598&~.~&214638019283&~(~&5972196&~ + ~&5972229&~ * cosr - ~&5972230&~ * sinr, ~&5972197&~ + ~&5972229&~ * sinr + ~&5972230&~ * cosr);
+		}
+		function regPropPt(px, py, rx, ry, rw, rh, fx, fy, fw, fh) {
+			~&197102514&~ relx = (rw !== 0) ? (px - rx) / rw : 0;
+			~&197102514&~ rely = (rh !== 0) ? (py - ry) / rh : 0;
+			~&7083121450889&~ ~&5971598&~.~&214638019283&~(fx + relx * fw, fy + rely * fh);
+		}
+		function regApplySelTransform(~&180989&~) {
+			~&5972376&~ (!~&180989&~) ~&7083121450889&~;
+			~&197102514&~ isRot = (~&180989&~.rot !== 0);
+			~&197102514&~ rv = ~&6504254477&~.~&500997885514268021&~(~&5971598&~.~&6504243191&~(~&180989&~.crx, ~&180989&~.cry, ~&180989&~.crw, ~&180989&~.crh));
+			~&197102514&~ scaleX = (rv.~&214646099849&~ !== 0) ? ~&6502909715&~.~&197079679&~(~&180989&~.w1 / rv.~&214646099849&~) : 1;
+			~&197102514&~ scaleY = (rv.~&7082729686082&~ !== 0) ? ~&6502909715&~.~&197079679&~(~&180989&~.h1 / rv.~&7082729686082&~) : 1;
+			~&197102514&~ ~&214634475364&~ = [];
+			~&197102514&~ out = ~&6504254477&~.regLinks.~&197092711&~(function(l) {
+				~&5972376&~ (!~&6504254477&~.regLinkInRect(l, ~&180989&~.crx, ~&180989&~.cry, ~&180989&~.crw, ~&180989&~.crh, ~&6504329801&~)) ~&7083121450889&~ l;
+				~&197102514&~ before = ~&6504254477&~.regGeom(l);
+				~&197102514&~ av = ~&6504254477&~.~&500997885514268021&~(~&5971598&~.~&214638019283&~(l.sx, l.sy));
+				~&197102514&~ hasBox = (l.bw !== ~&254550717068498203&~ && l.bh !== ~&254550717068498203&~ && l.bw > 0 && l.bh > 0);
+				~&197102514&~ nbx = l.bx;
+				~&197102514&~ nby = l.by;
+				~&197102514&~ nbw = l.bw;
+				~&197102514&~ nbh = l.bh;
+				~&197102514&~ nrot = (l.rot ? l.rot : 0);
+				~&197102514&~ nv;
+				~&5972376&~ (isRot) {
+					nv = ~&6504254477&~.regRotatePt(av.~&180993&~, av.~&180994&~, ~&180989&~.~&5972196&~, ~&180989&~.~&5972197&~, ~&180989&~.rot);
+					nrot = nrot + ~&180989&~.rot;
+					~&5972376&~ (hasBox) {
+						~&197102514&~ bcv = ~&6504254477&~.~&500997885514268021&~(~&5971598&~.~&214638019283&~(l.bx + l.bw / 2, l.by + l.bh / 2));
+						~&197102514&~ bns = ~&6504254477&~.~&505871454011417333&~(~&6504254477&~.regRotatePt(bcv.~&180993&~, bcv.~&180994&~, ~&180989&~.~&5972196&~, ~&180989&~.~&5972197&~, ~&180989&~.rot));
+						nbx = bns.~&180993&~ - l.bw / 2;
+						nby = bns.~&180994&~ - l.bh / 2;
+					}
+				} ~&6503784146&~ {
+					nv = ~&6504254477&~.regPropPt(av.~&180993&~, av.~&180994&~, rv.~&180993&~, rv.~&180994&~, rv.~&214646099849&~, rv.~&7082729686082&~, ~&180989&~.~&5972818&~, ~&180989&~.~&5972851&~, ~&180989&~.w1, ~&180989&~.h1);
+					~&5972376&~ (hasBox) {
+						nbw = l.bw * scaleX;
+						nbh = l.bh * scaleY;
+						~&197102514&~ bcv2 = ~&6504254477&~.~&500997885514268021&~(~&5971598&~.~&214638019283&~(l.bx + l.bw / 2, l.by + l.bh / 2));
+						~&197102514&~ bns2 = ~&6504254477&~.~&505871454011417333&~(~&6504254477&~.regPropPt(bcv2.~&180993&~, bcv2.~&180994&~, rv.~&180993&~, rv.~&180994&~, rv.~&214646099849&~, rv.~&7082729686082&~, ~&180989&~.~&5972818&~, ~&180989&~.~&5972851&~, ~&180989&~.w1, ~&180989&~.h1));
+						nbx = bns2.~&180993&~ - nbw / 2;
+						nby = bns2.~&180994&~ - nbh / 2;
+					}
+				}
+				~&197102514&~ ns = ~&6504254477&~.~&505871454011417333&~(nv);
+				~&197102514&~ nl;
+				~&5972376&~ (l.targetDoc) nl = { ~&5972374&~: l.~&5972374&~, sx: ns.~&180993&~, sy: ns.~&180994&~, ~&6504167078&~: l.~&6504167078&~, ~&7083194890448&~: "", targetDoc: l.targetDoc, targetDocName: l.targetDocName, targetPageKey: l.targetPageKey, bx: nbx, by: nby, bw: nbw, bh: nbh, rot: nrot };
+				~&6503784146&~ nl = { ~&5972374&~: l.~&5972374&~, sx: ns.~&180993&~, sy: ns.~&180994&~, ~&6504167078&~: l.~&6504167078&~, ~&7083194890448&~: l.~&7083194890448&~, bx: nbx, by: nby, bw: nbw, bh: nbh, rot: nrot };
+				~&214634475364&~.~&6504189257&~({ ~&5972374&~: l.~&5972374&~, before: before, after: ~&6504254477&~.regGeom(nl) });
+				~&7083121450889&~ nl;
+			});
+			~&6504254477&~.regPushMove(~&214634475364&~);
+			~&5972376&~ (~&214634475364&~.~&7082886407723&~ > 0) { ~&6504254477&~.regLinks = out; ~&6504254477&~.regPersist(); }
+		}
+		function regCommitDrag() {
+			~&197102514&~ ~&5972374&~ = ~&6504254477&~.regDragId;
+			~&5972376&~ (~&5972374&~ === "") ~&7083121450889&~;
+			~&5972376&~ (~&6504254477&~.regDragDX !== 0 || ~&6504254477&~.regDragDY !== 0) {
+				~&197102514&~ lk = ~&6504117156&~;
+				~&197085552&~ (~&197102514&~ ~&180978&~ = 0; ~&180978&~ < ~&6504254477&~.regLinks.~&7082886407723&~; ~&180978&~++) { ~&5972376&~ (~&6504254477&~.regLinks[~&180978&~].~&5972374&~ === ~&5972374&~) { lk = ~&6504254477&~.regLinks[~&180978&~]; ~&214621519406&~; } }
+				~&5972376&~ (lk) {
+					~&197102514&~ s0 = ~&6504254477&~.~&505871454011417333&~(~&5971598&~.~&214638019283&~(0, 0));
+					~&197102514&~ s1 = ~&6504254477&~.~&505871454011417333&~(~&5971598&~.~&214638019283&~(~&6504254477&~.regDragDX, ~&6504254477&~.regDragDY));
+					~&6504254477&~.regMoveLink(~&5972374&~, lk.sx + (s1.~&180993&~ - s0.~&180993&~), lk.sy + (s1.~&180994&~ - s0.~&180994&~));
+				}
+			}
+			~&6504254477&~.regDragDX = 0;
+			~&6504254477&~.regDragDY = 0;
+			~&6504254477&~.regDragId = "";
+		}
+		function regCancelLink() {
+			~&197102514&~ ~&197099793&~ = regPickSource;
+			regArmTimer.~&6504295855&~();
+			regSelfCheckTimer.~&6504295855&~();
+			regArmed = ~&214625660372&~;
+			regPickSource = "";
+			regEditId = "";
+			regSetPick(~&214625660372&~);
+			~&5972376&~ (~&197099793&~) regGoTo(~&197099793&~);
+		}
+		function regDisarm() {
+			regArmTimer.~&6504295855&~();
+			regSelfCheckTimer.~&6504295855&~();
+			regArmed = ~&214625660372&~;
+			regPickSource = "";
+			regEditId = "";
+			regMenuId = "";
+			regDragId = "";
+			regDragDX = 0;
+			regDragDY = 0;
+			regMoveArmed = ~&214625660372&~;
+			regEndLiveDrag();
+			regCrossActive = ~&214625660372&~;
+			regCrossReady = ~&214625660372&~;
+			regSetPick(~&214625660372&~);
+		}
+
+		function regResolves(~&197090674&~) {
+			~&197102514&~ ~&180973&~ = ~&6504254477&~.~&7712934851008712&~;
+			~&5972376&~ (!~&180973&~ || !~&197090674&~) ~&7083121450889&~ ~&214625660372&~;
+			try {
+				~&197102514&~ ~&180978&~ = ~&180973&~.~&254543134822321786&~(~&197090674&~);
+				~&7083121450889&~ (~&7083223278816&~ ~&180978&~ === ~&"7082983611378&~ && ~&180978&~ >= 0 && ~&180973&~.~&254533375641282938&~(~&180978&~) === ~&197090674&~);
+			} catch (~&180974&~) { ~&7083121450889&~ ~&6504329801&~; }
+		}
+		function regGoTo(~&197090674&~) {
+			~&5972376&~ (!~&197090674&~) ~&7083121450889&~;
+			~&197102514&~ ~&180991&~ = ~&6504254477&~;
+			~&197102514&~ ~&180973&~ = ~&180991&~.~&7712934851008712&~;
+			~&5972376&~ (!~&180973&~ || !regResolves(~&197090674&~)) ~&7083121450889&~;
+			~&197102514&~ ~&197088462&~ = -1;
+			try { ~&197088462&~ = ~&180973&~.~&254543134822321786&~(~&197090674&~); } catch (~&180974&~) { ~&197088462&~ = -1; }
+			~&5972376&~ (~&7083223278816&~ ~&197088462&~ === ~&"7082983611378&~ && ~&197088462&~ >= 0) {
+				try { ~&180991&~.~&7713405014271992&~(~&197088462&~, ~&14175747548438644067&~.~&10593835380864769165&~.~&7442916920529273295&~);  ~&7083121450889&~; }
+				catch (e1) {  }
+			}
+			~&180991&~.~&8399524639036305292&~(~&197090674&~);
+		}
+		onRegCurKeyChanged: {
+			~&6504254477&~.regDragId = "";
+			~&6504254477&~.regDragDX = 0;
+			~&6504254477&~.regDragDY = 0;
+			~&5972376&~ (regArmed && regCurKey !== "" && regCurKey !== regPickSource && regResolves(regCurKey)) {
+				~&197102514&~ tgt = regCurKey;
+				~&197102514&~ ~&197099793&~ = regPickSource;
+				~&197102514&~ srcNum = regPickSourceNum;
+				regCreateLink(tgt);
+				regArmTimer.~&6504295855&~();
+				regSelfCheckTimer.~&6504295855&~();
+				regArmed = ~&214625660372&~;
+				regPickSource = "";
+				regSetPick(~&214625660372&~);
+				regReturnTo = ~&197099793&~;
+				regNotify("Linked page " + srcNum + " to page " + (~&6504254477&~.~&6504167078&~ + 1));
+				regReturnTimer.~&233743006639214&~();
+			}
+		}
+		~&13184053911240945935&~: { regUndoApplyTimer.~&6504295855&~(); ~&6504254477&~.regUndoApplyQueue = []; ~&6504254477&~.regUndoStack = []; ~&6504254477&~.regRedoStack = []; regDisarm(); regReload(); regMaybeEnterCrossPick(); regConsumeCrossJump(); regConsumeCrossError(); }
+		~&254480451320573660&~.~&495334332051582499&~: { regReload(); regMaybeEnterCrossPick(); regConsumeCrossJump(); regConsumeCrossError(); }
+
+		~&6502786168&~ {
+			~&5972374&~: regLinkLayer
+			~&7083038346995&~: ~&6504254477&~.~&254550477519892873&~
+			~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+			~&180995&~: 100000
+
+				~&428051690305612204&~ {
+					~&7083194890448&~: ~&6504254477&~.~&8399340108982949229&~
+					function ~&4459845994897993402&~() { ~&6504254477&~.regUndoMove(); }
+					function ~&4459845994897875790&~() { ~&6504254477&~.regRedoMove(); }
+				}
+
+				~&428051690305612204&~ {
+					~&7083194890448&~: ~&6504254477&~
+					function ~&2611208156237130907&~() {
+						~&197102514&~ sh = ~&6504254477&~.~&11510301049521437407&~;
+						~&5972376&~ (sh && sh.~&7713268460371791&~ === ~&6502882289&~.~&12710273036866530829&~) ~&7083121450889&~;
+						~&6504254477&~.regPushMove([]);
+					}
+				}
+
+				~&214604601930&~ {
+					~&5972374&~: regUndoApplyTimer
+					~&7713147298280334&~: ~&6504254477&~.regUndoLagMs
+					~&7083121289162&~: ~&214625660372&~
+					~&495358363329399331&~: {
+						~&197102514&~ q = ~&6504254477&~.regUndoApplyQueue;
+						~&6504254477&~.regUndoApplyQueue = [];
+						~&197085552&~ (~&197102514&~ ~&180978&~ = 0; ~&180978&~ < q.~&7082886407723&~; ~&180978&~++) ~&6504254477&~.regApplyGeom(q[~&180978&~].~&214629893131&~, q[~&180978&~].useBefore);
+					}
+				}
+
+				~&428051690305612204&~ {
+					~&7083194890448&~: ~&254540341572282132&~
+					onRegLinkPickModeChanged: {
+						~&5972376&~ (~&254540341572282132&~ && !~&254540341572282132&~.regLinkPickMode && ~&6504254477&~.regArmed)
+							~&6504254477&~.regCancelLink();
+					}
+				}
+
+				~&428051690305612204&~ {
+					~&7083194890448&~: ~&254540341572282132&~
+					onRegOverviewClosedChanged: {
+						~&5972376&~ (~&6504254477&~.regArmed) regSelfCheckTimer.~&233743006639214&~();
+					}
+				}
+
+				~&214604601930&~ {
+					~&5972374&~: regSelfCheckTimer
+					~&7713147298280334&~: 600
+					~&7083121289162&~: ~&214625660372&~
+					~&495358363329399331&~: {
+						~&5972376&~ (~&6504254477&~.regArmed && ~&6504254477&~.regCurKey === ~&6504254477&~.regPickSource) {
+							~&6504254477&~.regReturnTo = "";
+							~&6504254477&~.regNotify("Cannot link a page to itself. Choose another");
+							regReturnTimer.~&233743006639214&~();
+							~&6504254477&~.regDisarm();
+						}
+					}
+				}
+
+				~&214604601930&~ {
+					~&5972374&~: regArmTimer
+					~&7713147298280334&~: 30000
+					~&7083121289162&~: ~&214625660372&~
+					~&495358363329399331&~: ~&6504254477&~.regDisarm()
+				}
+
+				~&214604601930&~ {
+					~&5972374&~: regReturnTimer
+					~&7713147298280334&~: 1750
+					~&7083121289162&~: ~&214625660372&~
+					~&495358363329399331&~: {
+						~&5972376&~ (~&6504254477&~.regReturnTo) {
+							~&6504254477&~.regGoTo(~&6504254477&~.regReturnTo);
+							~&6504254477&~.regReturnTo = "";
+						}
+						regBarTimer.~&233743006639214&~();
+					}
+				}
+
+				~&214604601930&~ {
+					~&5972374&~: regBarTimer
+					~&7713147298280334&~: 1750
+					~&7083121289162&~: ~&214625660372&~
+					~&495358363329399331&~: ~&6504254477&~.regConfirmText = ""
+				}
+
+				~&428051690305612204&~ {
+					~&7083194890448&~: ~&254540341572282132&~
+					onRegCrossCancelChanged: {
+						~&5972376&~ (~&6504254477&~.regCrossActive) ~&6504254477&~.regCancelCross();
+					}
+				}
+
+				~&428051690305612204&~ {
+					~&7083194890448&~: ~&254540341572282132&~
+					onRegOverviewClosedChanged: {
+						~&5972376&~ (~&6504254477&~.regCrossActive) regCrossCommitTimer.~&233743006639214&~();
+					}
+				}
+
+				~&214604601930&~ {
+					~&5972374&~: regCrossCommitTimer
+					~&7713147298280334&~: 400
+					~&7083121289162&~: ~&214625660372&~
+					~&495358363329399331&~: ~&6504254477&~.regCommitCross()
+				}
+
+				~&214604601930&~ {
+					~&5972374&~: regCrossArmTimer
+					~&7713147298280334&~: 120
+					~&7083121289162&~: ~&214625660372&~
+					~&495358363329399331&~: ~&6504254477&~.regCrossReady = ~&6504329801&~
+				}
+
+				~&254501108490678590&~ {
+					~&5972374&~: regBackBar
+					~&233748328658231&~: ~&6504254477&~.regBackText !== ""
+					~&180995&~: 100004
+					~&233721384511543&~.~&7082507142622&~: ~&7083038346995&~.~&7082507142622&~
+					~&233721384511543&~.~&6504027668&~: ~&7083038346995&~.~&6504027668&~
+					~&233721384511543&~.~&214640173127&~: ~&7083038346995&~.~&214640173127&~
+					~&7082729686082&~: 115
+					~&214622605608&~: ~&"233638824537804&~
+					~&6503165774&~ {
+						~&233721384511543&~.~&6504027668&~: ~&7083038346995&~.~&6504027668&~
+						~&233721384511543&~.~&8399743405844438450&~: 40
+						~&233721384511543&~.~&3441383163516681764&~: ~&7083038346995&~.~&3441383163516681764&~
+						~&6504315758&~: ~&6504254477&~.regBackText
+						~&214622605608&~: "#FFFFFF"
+						~&6503823200&~.~&254543497768871654&~: 30
+						~&6503823200&~.~&6503679370&~: ~&6504329801&~
+					}
+					~&254501108490678590&~ {
+						~&233721384511543&~.~&214640173127&~: ~&7083038346995&~.~&214640173127&~
+						~&233721384511543&~.~&499747351624466981&~: 24
+						~&233721384511543&~.~&3441383163516681764&~: ~&7083038346995&~.~&3441383163516681764&~
+						~&214646099849&~: 160
+						~&7082729686082&~: 70
+						~&214622605608&~: "#FFFFFF"
+						~&6503165774&~ { ~&233721384511543&~.~&7712879746914881&~: ~&7083038346995&~; ~&6504315758&~: ~&"6502513850&~; ~&214622605608&~: ~&"233638824537804&~; ~&6503823200&~.~&254543497768871654&~: 28; ~&6503823200&~.~&6503679370&~: ~&6504329801&~ }
+						~&254494525842443467&~ {
+							~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+							~&254542236275632405&~: {
+								~&197102514&~ ~&180971&~ = ~&6504254477&~.regBackTarget;
+								~&6504254477&~.regBackText = "";
+								regBackTimer.~&6504295855&~();
+								~&5972376&~ (~&180971&~ && ~&180971&~.~&214623780460&~) {
+									~&254540341572282132&~.regCrossJump = { targetPageKey: ~&180971&~.pageKey, linkId: "", ~&6503663834&~: ~&6504117156&~ };
+									~&197102514&~ be = ~&233694067165438&~.~&8399431778896295215&~(~&180971&~.~&214623780460&~);
+									~&5972376&~ (be) ~&254540341572282132&~.~&9497240032101537789&~(be, 0);
+								}
+							}
+						}
+					}
+				}
+
+				~&214604601930&~ {
+					~&5972374&~: regBackTimer
+					~&7713147298280334&~: 5000
+					~&7083121289162&~: ~&214625660372&~
+					~&495358363329399331&~: ~&6504254477&~.regBackText = ""
+				}
+
+				~&214604601930&~ {
+					~&5972374&~: regJumpTimer
+					~&7713147298280334&~: 150
+					~&7083121289162&~: ~&214625660372&~
+					~&495358363329399331&~: ~&6504254477&~.regTryJump()
+				}
+
+				~&214604601930&~ {
+					~&5972374&~: regCrossReturnTimer
+					~&7713147298280334&~: 1750
+					~&7083121289162&~: ~&214625660372&~
+					~&495358363329399331&~: {
+						~&197102514&~ ~&180974&~ = ~&233694067165438&~.~&8399431778896295215&~(~&6504254477&~.regCrossSrcDocId);
+						~&5972376&~ (~&180974&~) ~&254540341572282132&~.~&9497240032101537789&~(~&180974&~, ~&6504254477&~.regCrossSrcPageNum - 1);
+					}
+				}
+
+				~&254501108490678590&~ {
+					~&5972374&~: regConfirmBar
+					~&233748328658231&~: ~&6504254477&~.regConfirmText !== ""
+					~&180995&~: 100003
+					~&233721384511543&~.~&197100796&~: ~&7083038346995&~.~&197100796&~
+					~&233721384511543&~.~&6504027668&~: ~&7083038346995&~.~&6504027668&~
+					~&233721384511543&~.~&214640173127&~: ~&7083038346995&~.~&214640173127&~
+					~&7082729686082&~: 115
+					~&214622605608&~: ~&"233638824537804&~
+					~&6503165774&~ {
+						~&233721384511543&~.~&7712879746914881&~: ~&7083038346995&~
+						~&6504315758&~: ~&6504254477&~.regConfirmText
+						~&214622605608&~: "#FFFFFF"
+						~&6503823200&~.~&254543497768871654&~: 30
+						~&6503823200&~.~&6503679370&~: ~&6504329801&~
+					}
+				}
+
+				~&254501108490678590&~ {
+					~&5972374&~: regDialog
+					~&233748328658231&~: ~&6504254477&~.regDialogTitle !== ""
+					~&180995&~: 100020
+					~&233721384511543&~.~&197100796&~: ~&7083038346995&~.~&197100796&~
+					~&233721384511543&~.~&6504027668&~: ~&7083038346995&~.~&6504027668&~
+					~&233721384511543&~.~&214640173127&~: ~&7083038346995&~.~&214640173127&~
+					~&7082729686082&~: 520
+					~&214622605608&~: ~&"233638824537804&~
+					~&6503165774&~ {
+						~&5972374&~: regDialogTitleText
+						~&233721384511543&~.~&6504027668&~: ~&7083038346995&~.~&6504027668&~
+						~&233721384511543&~.~&8399743405844438450&~: 60
+						~&233721384511543&~.~&197100796&~: ~&7083038346995&~.~&197100796&~
+						~&233721384511543&~.~&254549367831075482&~: 90
+						~&6504315758&~: ~&6504254477&~.regDialogTitle
+						~&214622605608&~: "#FFFFFF"
+						~&6503823200&~.~&254543497768871654&~: 56
+					}
+					~&6503165774&~ {
+						~&233721384511543&~.~&6504027668&~: ~&7083038346995&~.~&6504027668&~
+						~&233721384511543&~.~&8399743405844438450&~: 60
+						~&233721384511543&~.~&197100796&~: regDialogTitleText.~&7082507142622&~
+						~&233721384511543&~.~&254549367831075482&~: 30
+						~&6504315758&~: ~&6504254477&~.regDialogMsg
+						~&214622605608&~: "#FFFFFF"
+						~&6503823200&~.~&254543497768871654&~: 30
+					}
+					~&197063777&~ {
+						~&233721384511543&~.~&6504027668&~: ~&7083038346995&~.~&6504027668&~
+						~&233721384511543&~.~&8399743405844438450&~: 60
+						~&233721384511543&~.~&7082507142622&~: ~&7083038346995&~.~&7082507142622&~
+						~&233721384511543&~.~&15692798426932296956&~: 90
+						~&233744706647566&~: 30
+						~&254501108490678590&~ {
+							~&214646099849&~: 300
+							~&7082729686082&~: 90
+							~&214622605608&~: "#FFFFFF"
+							~&6503165774&~ { ~&233721384511543&~.~&7712879746914881&~: ~&7083038346995&~; ~&6504315758&~: ~&"7081277108079&~; ~&214622605608&~: ~&"233638824537804&~; ~&6503823200&~.~&254543497768871654&~: 30 }
+							~&254494525842443467&~ {
+								~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+								~&254542236275632405&~: { ~&6504254477&~.regDialogTitle = ""; ~&6504254477&~.regDialogMsg = ""; ~&6504254477&~.regDialogLinkId = ""; }
+							}
+						}
+						~&254501108490678590&~ {
+							~&214646099849&~: 300
+							~&7082729686082&~: 90
+							~&214622605608&~: ~&"233638824537804&~
+							~&7082507052999&~.~&214622605608&~: "#FFFFFF"
+							~&7082507052999&~.~&214646099849&~: 2
+							~&6503165774&~ { ~&233721384511543&~.~&7712879746914881&~: ~&7083038346995&~; ~&6504315758&~: "Delete entry"; ~&214622605608&~: "#FFFFFF"; ~&6503823200&~.~&254543497768871654&~: 30 }
+							~&254494525842443467&~ {
+								~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+								~&254542236275632405&~: {
+									~&5972376&~ (~&6504254477&~.regDialogLinkId !== "") ~&6504254477&~.regDeleteLink(~&6504254477&~.regDialogLinkId);
+									~&6504254477&~.regDialogTitle = ""; ~&6504254477&~.regDialogMsg = ""; ~&6504254477&~.regDialogLinkId = "";
+								}
+							}
+						}
+					}
+				}
+
+			~&7712155293725601&~ {
+				~&214634455770&~: ~&6504254477&~.regLinks
+				~&7712922269353028&~: ~&6502786168&~ {
+					~&5972374&~: regMark
+					~&233748328658231&~: ~&254539508423767444&~.~&6504167078&~ === ~&6504254477&~.regCurKey && ~&6504254477&~.~&254547437090201330&~ && !~&6504254477&~.~&254547437090201330&~.~&2831630795936538945&~ && (~&6504254477&~.~&7712934851008712&~ ? ~&6504254477&~.~&7712934851008712&~.~&254543134818768527&~ : 0) >= 0 && (~&254539508423767444&~.targetDoc ? ~&6504329801&~ : (!~&254539508423767444&~.~&7083194890448&~ || ~&6504254477&~.regResolves(~&254539508423767444&~.~&7083194890448&~))) && ~&254539508423767444&~.~&5972374&~ !== ~&6504254477&~.regDragId
+					~&233739540775906&~: ~&254539508423767444&~.targetDoc ? (~&233694067165438&~.~&8399431778896295215&~(~&254539508423767444&~.targetDoc) ? 1.0 : 0.4) : (~&254539508423767444&~.~&7083194890448&~ ? 1.0 : 0.5)
+					property ~&214638019283&~ regViewPt: {
+						~&197102514&~ _a = ~&6504254477&~.~&6225047726527679817&~;
+						~&197102514&~ _b = ~&6504254477&~.~&14826442470334830641&~;
+						~&197102514&~ _c = ~&6504254477&~.~&254551912358044556&~;
+						~&197102514&~ _d = ~&6504254477&~.regCurKey;
+						~&197102514&~ sh = ~&6504254477&~.~&18399528329672988301&~;
+						~&5972376&~ (regFollowsManip && sh) {
+							~&197102514&~ avm = ~&6504254477&~.~&500997885514268021&~(~&5971598&~.~&214638019283&~(~&254539508423767444&~.sx, ~&254539508423767444&~.sy));
+							~&5972376&~ (sh.regSelRotating)
+								~&7083121450889&~ ~&6504254477&~.regRotatePt(avm.~&180993&~, avm.~&180994&~, sh.regSelX + sh.regSelW / 2, sh.regSelY + sh.regSelH / 2, sh.regSelRot);
+							~&197102514&~ rvm = ~&6504254477&~.~&500997885514268021&~(sh.~&12811276051795634507&~);
+							~&7083121450889&~ ~&6504254477&~.regPropPt(avm.~&180993&~, avm.~&180994&~, rvm.~&180993&~, rvm.~&180994&~, rvm.~&214646099849&~, rvm.~&7082729686082&~, sh.regSelX, sh.regSelY, sh.regSelW, sh.regSelH);
+						}
+						~&197102514&~ ox = regFollowsDrag ? ~&6504254477&~.regLiveDX : 0;
+						~&197102514&~ oy = regFollowsDrag ? ~&6504254477&~.regLiveDY : 0;
+						~&7083121450889&~ ~&6504254477&~.~&500997885514268021&~(~&5971598&~.~&214638019283&~(~&254539508423767444&~.sx + ox, ~&254539508423767444&~.sy + oy));
+					}
+					property ~&6504243117&~ regZoom: {
+						~&197102514&~ ~&180968&~ = regViewPt;
+						~&197102514&~ ds = ~&6504254477&~.~&15777890623490054006&~;
+						~&197102514&~ ~&5972746&~ = ~&6504254477&~.~&502817364213021138&~;
+						~&5972376&~ (ds && ds > 0 && ~&5972746&~ && ~&5972746&~.~&214641137009&~ > 0)
+							~&7083121450889&~ ~&5972746&~.~&214641137009&~ / ds;
+						~&197102514&~ pa = ~&6504254477&~.~&500997885514268021&~(~&5971598&~.~&214638019283&~(0, 0));
+						~&197102514&~ pb = ~&6504254477&~.~&500997885514268021&~(~&5971598&~.~&214638019283&~(1000, 0));
+						~&197102514&~ ~&180973&~ = pb.~&180993&~ - pa.~&180993&~;
+						~&7083121450889&~ ~&180973&~ > 0 ? (~&180973&~ / 1000) : 1;
+					}
+					property ~&6503679477&~ regFollowsDrag: ~&6504254477&~.regMoveArmed && ~&6504254477&~.regLinkInRect(~&254539508423767444&~, ~&6504254477&~.regMoveStartX, ~&6504254477&~.regMoveStartY, ~&6504254477&~.regMoveStartW, ~&6504254477&~.regMoveStartH)
+					property ~&6503679477&~ regFollowsManip: {
+						~&197102514&~ sh = ~&6504254477&~.~&18399528329672988301&~;
+						~&5972376&~ (!sh || !sh.regSelBusy) ~&7083121450889&~ ~&214625660372&~;
+						~&197102514&~ ~&180987&~ = sh.~&12811276051795634507&~;
+						~&7083121450889&~ ~&6504254477&~.regLinkInRect(~&254539508423767444&~, ~&180987&~.~&180993&~, ~&180987&~.~&180994&~, ~&180987&~.~&214646099849&~, ~&180987&~.~&7082729686082&~, ~&6504329801&~);
+					}
+					property ~&6504243117&~ regRot: {
+						~&197102514&~ ~&6503664356&~ = (~&254539508423767444&~.rot ? ~&254539508423767444&~.rot : 0);
+						~&197102514&~ sh = ~&6504254477&~.~&18399528329672988301&~;
+						~&5972376&~ (regFollowsManip && sh && sh.regSelRot !== 0) ~&7083121450889&~ ~&6503664356&~ + sh.regSelRot;
+						~&7083121450889&~ ~&6503664356&~;
+					}
+					~&214646099849&~: 64 * regZoom
+					~&7082729686082&~: 64 * regZoom
+					~&180993&~: regViewPt.~&180993&~ + 16 * regZoom
+					~&180994&~: regViewPt.~&180994&~ - ~&7082729686082&~ / 2
+
+					~&254501108490678590&~ {
+						~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+						~&214622605608&~: ~&"503220030291830651&~
+					}
+					~&214591687532&~ {
+						~&233721384511543&~.~&7712879746914881&~: ~&7083038346995&~
+						~&214646099849&~: 48 * regZoom
+						~&7082729686082&~: 48 * regZoom
+						~&8400082987879754261&~.~&214646099849&~: ~&6502909715&~.~&214640404177&~(48 * regZoom)
+						~&8400082987879754261&~.~&7082729686082&~: ~&6502909715&~.~&214640404177&~(48 * regZoom)
+						~&7083169887491&~: ~&6504329801&~
+						~&7713532151049593&~: regMark.regRot
+						~&7083172477658&~: ~&254539508423767444&~.targetDoc ? ~&"15094524446771853950&~ : ~&"4439251559583128748&~
+					}
+					~&254494525842443467&~ {
+						~&5972374&~: regDiscMouse
+						~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+						property ~&6503679477&~ regLongFired: ~&214625660372&~
+						~&254542253295368380&~: { regDiscMouse.regLongFired = ~&214625660372&~; regHoldTimer.~&233743006639214&~(); }
+						~&8399894427451672267&~: regHoldTimer.~&6504295855&~()
+						~&8399893783085190805&~: regHoldTimer.~&6504295855&~()
+						~&254542236275632405&~: { ~&5972376&~ (!regDiscMouse.regLongFired) { ~&5972376&~ (~&254539508423767444&~.targetDoc) ~&6504254477&~.regGoToCross(~&254539508423767444&~); ~&6503784146&~ ~&5972376&~ (~&254539508423767444&~.~&7083194890448&~) ~&6504254477&~.regGoTo(~&254539508423767444&~.~&7083194890448&~); } }
+						~&214604601930&~ {
+							~&5972374&~: regHoldTimer
+							~&7713147298280334&~: 700
+							~&7083121289162&~: ~&214625660372&~
+							~&495358363329399331&~: { regDiscMouse.regLongFired = ~&6504329801&~; ~&6504254477&~.regMenuId = ~&254539508423767444&~.~&5972374&~; }
+						}
+					}
+				}
+			}
+
+			~&6502786168&~ {
+				~&5972374&~: regMenuLayer
+				~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+				~&233748328658231&~: ~&6504254477&~.regMenuId !== "" && regMenuLayer.regMLink !== ~&6504117156&~ && regMenuLayer.regMLink.~&6504167078&~ === ~&6504254477&~.regCurKey
+				~&180995&~: 100010
+
+				property ~&197102514&~ regMLink: {
+					~&197102514&~ _m = ~&6504254477&~.regMenuId;
+					~&197102514&~ ~&197080206&~ = ~&6504254477&~.regLinks;
+					~&197085552&~ (~&197102514&~ ~&180978&~ = 0; ~&180978&~ < ~&197080206&~.~&7082886407723&~; ~&180978&~++) { ~&5972376&~ (~&197080206&~[~&180978&~].~&5972374&~ === _m) ~&7083121450889&~ ~&197080206&~[~&180978&~]; }
+					~&7083121450889&~ ~&6504117156&~;
+				}
+				property ~&214638019283&~ regMPt: {
+					~&197102514&~ _a = ~&6504254477&~.~&6225047726527679817&~;
+					~&197102514&~ _b = ~&6504254477&~.~&14826442470334830641&~;
+					~&197102514&~ _c = ~&6504254477&~.~&254551912358044556&~;
+					~&197102514&~ lk = regMLink;
+					~&5972376&~ (!lk) ~&7083121450889&~ ~&5971598&~.~&214638019283&~(0, 0);
+					~&7083121450889&~ ~&6504254477&~.~&500997885514268021&~(~&5971598&~.~&214638019283&~(lk.sx, lk.sy));
+				}
+				property ~&6504243117&~ regMZoom: {
+					~&197102514&~ _a = ~&6504254477&~.~&6225047726527679817&~;
+					~&197102514&~ _b = ~&6504254477&~.~&14826442470334830641&~;
+					~&197102514&~ _c = ~&6504254477&~.~&254551912358044556&~;
+					~&197102514&~ ds = ~&6504254477&~.~&15777890623490054006&~;
+					~&197102514&~ ~&5972746&~ = ~&6504254477&~.~&502817364213021138&~;
+					~&5972376&~ (ds && ds > 0 && ~&5972746&~ && ~&5972746&~.~&214641137009&~ > 0)
+						~&7083121450889&~ ~&5972746&~.~&214641137009&~ / ds;
+					~&197102514&~ pa = ~&6504254477&~.~&500997885514268021&~(~&5971598&~.~&214638019283&~(0, 0));
+					~&197102514&~ pb = ~&6504254477&~.~&500997885514268021&~(~&5971598&~.~&214638019283&~(1000, 0));
+					~&197102514&~ ~&180973&~ = pb.~&180993&~ - pa.~&180993&~;
+					~&7083121450889&~ ~&180973&~ > 0 ? (~&180973&~ / 1000) : 1;
+				}
+
+				~&254494525842443467&~ {
+					~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+					~&254542236275632405&~: ~&6504254477&~.regMenuId = ""
+					~&254501108490678590&~ { ~&233721384511543&~.~&6503816592&~: ~&7083038346995&~; ~&214622605608&~: ~&"503220030291830651&~ }
+				}
+
+				~&254501108490678590&~ {
+					~&5972374&~: regMenuBar
+					~&233748328658231&~: regMenuLayer.regMLink !== ~&6504117156&~
+					~&214622605608&~: "#FFFFFF"
+					~&7082507052999&~.~&214622605608&~: ~&"233638824537804&~
+					~&7082507052999&~.~&214646099849&~: 2
+					~&7083116119249&~: 0
+					~&214646099849&~: regMenuRow.~&214646099849&~ + 28
+					~&7082729686082&~: regMenuRow.~&7082729686082&~ + 20
+					~&180993&~: ~&6502909715&~.~&197092719&~(8, ~&6502909715&~.~&197092973&~(regMenuLayer.~&214646099849&~ - ~&214646099849&~ - 8, regMenuLayer.regMPt.~&180993&~ + 48 * regMenuLayer.regMZoom - ~&214646099849&~ / 2))
+					~&180994&~: ~&6502909715&~.~&197092719&~(8, ~&6502909715&~.~&197092973&~(regMenuLayer.~&7082729686082&~ - ~&7082729686082&~ - 8, regMenuLayer.regMPt.~&180994&~ + 32 * regMenuLayer.regMZoom + 14))
+
+					~&197063777&~ {
+						~&5972374&~: regMenuRow
+						~&233721384511543&~.~&7712879746914881&~: ~&7083038346995&~
+						~&233744706647566&~: 20
+						~&6502786168&~ {
+							~&214646099849&~: 60
+							~&7082729686082&~: 60
+							~&214591687532&~ {
+								~&233721384511543&~.~&7712879746914881&~: ~&7083038346995&~
+								~&214646099849&~: 52
+								~&7082729686082&~: 52
+								~&8400082987879754261&~.~&214646099849&~: 52
+								~&8400082987879754261&~.~&7082729686082&~: 52
+								~&7083169887491&~: ~&6504329801&~
+								~&7083172477658&~: ~&"5660781085429940634&~
+							}
+							~&254494525842443467&~ {
+								~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+								~&254542236275632405&~: ~&6504254477&~.regEditLink(regMenuLayer.regMLink ? regMenuLayer.regMLink.~&5972374&~ : "")
+							}
+						}
+						~&6502786168&~ {
+							~&214646099849&~: 60
+							~&7082729686082&~: 60
+							~&214591687532&~ {
+								~&233721384511543&~.~&7712879746914881&~: ~&7083038346995&~
+								~&214646099849&~: 52
+								~&7082729686082&~: 52
+								~&8400082987879754261&~.~&214646099849&~: 52
+								~&8400082987879754261&~.~&7082729686082&~: 52
+								~&7083169887491&~: ~&6504329801&~
+								~&7083172477658&~: ~&"4017329710897058643&~
+							}
+							~&254494525842443467&~ {
+								~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+								~&254542236275632405&~: { ~&197102514&~ lk = regMenuLayer.regMLink; ~&5972376&~ (lk) ~&6504254477&~.regDragId = lk.~&5972374&~; ~&6504254477&~.regDragDX = 0; ~&6504254477&~.regDragDY = 0; ~&6504254477&~.regMenuId = ""; }
+							}
+						}
+						~&6502786168&~ {
+							~&214646099849&~: 60
+							~&7082729686082&~: 60
+							~&214591687532&~ {
+								~&233721384511543&~.~&7712879746914881&~: ~&7083038346995&~
+								~&214646099849&~: 52
+								~&7082729686082&~: 52
+								~&8400082987879754261&~.~&214646099849&~: 52
+								~&8400082987879754261&~.~&7082729686082&~: 52
+								~&7083169887491&~: ~&6504329801&~
+								~&7083172477658&~: ~&"8609871989899886756&~
+							}
+							~&254494525842443467&~ {
+								~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+								~&254542236275632405&~: ~&6504254477&~.regDeleteLink(regMenuLayer.regMLink ? regMenuLayer.regMLink.~&5972374&~ : "")
+							}
+						}
+					}
+				}
+			}
+			~&6502786168&~ {
+				~&5972374&~: regDragLayer
+				~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+				~&233748328658231&~: ~&6504254477&~.regDragId !== "" && regDragLayer.regDLink !== ~&6504117156&~ && regDragLayer.regDLink.~&6504167078&~ === ~&6504254477&~.regCurKey
+				~&180995&~: 100011
+
+				property ~&197102514&~ regDLink: {
+					~&197102514&~ _m = ~&6504254477&~.regDragId;
+					~&197102514&~ ~&197080206&~ = ~&6504254477&~.regLinks;
+					~&197085552&~ (~&197102514&~ ~&180978&~ = 0; ~&180978&~ < ~&197080206&~.~&7082886407723&~; ~&180978&~++) { ~&5972376&~ (~&197080206&~[~&180978&~].~&5972374&~ === _m) ~&7083121450889&~ ~&197080206&~[~&180978&~]; }
+					~&7083121450889&~ ~&6504117156&~;
+				}
+				property ~&214638019283&~ regDPt: {
+					~&197102514&~ _a = ~&6504254477&~.~&6225047726527679817&~;
+					~&197102514&~ _b = ~&6504254477&~.~&14826442470334830641&~;
+					~&197102514&~ _c = ~&6504254477&~.~&254551912358044556&~;
+					~&197102514&~ lk = regDLink;
+					~&5972376&~ (!lk) ~&7083121450889&~ ~&5971598&~.~&214638019283&~(0, 0);
+					~&7083121450889&~ ~&6504254477&~.~&500997885514268021&~(~&5971598&~.~&214638019283&~(lk.sx, lk.sy));
+				}
+				property ~&6504243117&~ regDZoom: {
+					~&197102514&~ _a = ~&6504254477&~.~&6225047726527679817&~;
+					~&197102514&~ _b = ~&6504254477&~.~&14826442470334830641&~;
+					~&197102514&~ _c = ~&6504254477&~.~&254551912358044556&~;
+					~&197102514&~ ds = ~&6504254477&~.~&15777890623490054006&~;
+					~&197102514&~ ~&5972746&~ = ~&6504254477&~.~&502817364213021138&~;
+					~&5972376&~ (ds && ds > 0 && ~&5972746&~ && ~&5972746&~.~&214641137009&~ > 0)
+						~&7083121450889&~ ~&5972746&~.~&214641137009&~ / ds;
+					~&197102514&~ pa = ~&6504254477&~.~&500997885514268021&~(~&5971598&~.~&214638019283&~(0, 0));
+					~&197102514&~ pb = ~&6504254477&~.~&500997885514268021&~(~&5971598&~.~&214638019283&~(1000, 0));
+					~&197102514&~ ~&180973&~ = pb.~&180993&~ - pa.~&180993&~;
+					~&7083121450889&~ ~&180973&~ > 0 ? (~&180973&~ / 1000) : 1;
+				}
+
+				~&254494525842443467&~ {
+					~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+					~&254542236275632405&~: ~&6504254477&~.regCommitDrag()
+					~&254501108490678590&~ { ~&233721384511543&~.~&6503816592&~: ~&7083038346995&~; ~&214622605608&~: ~&"503220030291830651&~ }
+				}
+
+				~&6502786168&~ {
+					~&5972374&~: regDragBox
+					~&214646099849&~: 64 * regDragLayer.regDZoom
+					~&7082729686082&~: 64 * regDragLayer.regDZoom
+					~&180993&~: regDragLayer.regDPt.~&180993&~ + 16 * regDragLayer.regDZoom + ~&6504254477&~.regDragDX
+					~&180994&~: regDragLayer.regDPt.~&180994&~ - ~&7082729686082&~ / 2 + ~&6504254477&~.regDragDY
+					property ~&6504243117&~ regOut: 8 * regDragLayer.regDZoom
+					property ~&6504243117&~ regHs: 25 * regDragLayer.regDZoom
+
+					~&6502786168&~ {
+						~&5972374&~: regDragFrame
+						~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+						~&233748328658231&~: !regBoxMouse.~&233740915843711&~
+						~&254501108490678590&~ {
+							~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+							~&233721384511543&~.~&233736391113274&~: -regDragBox.regOut
+							~&214622605608&~: "#40000000"
+							~&7082507052999&~.~&214622605608&~: ~&"233638824537804&~
+							~&7082507052999&~.~&214646099849&~: 2
+						}
+						~&254501108490678590&~ {
+							~&214646099849&~: regDragBox.regHs
+							~&7082729686082&~: regDragBox.regHs
+							~&180993&~: -regDragBox.regOut - regDragBox.regHs / 2
+							~&180994&~: -regDragBox.regOut - regDragBox.regHs / 2
+							~&214622605608&~: "#FFFFFF"
+							~&7082507052999&~.~&214622605608&~: ~&"233638824537804&~
+							~&7082507052999&~.~&214646099849&~: 2
+						}
+						~&254501108490678590&~ {
+							~&214646099849&~: regDragBox.regHs
+							~&7082729686082&~: regDragBox.regHs
+							~&180993&~: regDragFrame.~&214646099849&~ + regDragBox.regOut - regDragBox.regHs / 2
+							~&180994&~: -regDragBox.regOut - regDragBox.regHs / 2
+							~&214622605608&~: "#FFFFFF"
+							~&7082507052999&~.~&214622605608&~: ~&"233638824537804&~
+							~&7082507052999&~.~&214646099849&~: 2
+						}
+						~&254501108490678590&~ {
+							~&214646099849&~: regDragBox.regHs
+							~&7082729686082&~: regDragBox.regHs
+							~&180993&~: -regDragBox.regOut - regDragBox.regHs / 2
+							~&180994&~: regDragFrame.~&7082729686082&~ + regDragBox.regOut - regDragBox.regHs / 2
+							~&214622605608&~: "#FFFFFF"
+							~&7082507052999&~.~&214622605608&~: ~&"233638824537804&~
+							~&7082507052999&~.~&214646099849&~: 2
+						}
+						~&254501108490678590&~ {
+							~&214646099849&~: regDragBox.regHs
+							~&7082729686082&~: regDragBox.regHs
+							~&180993&~: regDragFrame.~&214646099849&~ + regDragBox.regOut - regDragBox.regHs / 2
+							~&180994&~: regDragFrame.~&7082729686082&~ + regDragBox.regOut - regDragBox.regHs / 2
+							~&214622605608&~: "#FFFFFF"
+							~&7082507052999&~.~&214622605608&~: ~&"233638824537804&~
+							~&7082507052999&~.~&214646099849&~: 2
+						}
+					}
+					~&214591687532&~ {
+						~&233721384511543&~.~&7712879746914881&~: ~&7083038346995&~
+						~&214646099849&~: 48 * regDragLayer.regDZoom
+						~&7082729686082&~: 48 * regDragLayer.regDZoom
+						~&8400082987879754261&~.~&214646099849&~: ~&6502909715&~.~&214640404177&~(48 * regDragLayer.regDZoom)
+						~&8400082987879754261&~.~&7082729686082&~: ~&6502909715&~.~&214640404177&~(48 * regDragLayer.regDZoom)
+						~&7083169887491&~: ~&6504329801&~
+						~&7083172477658&~: (regDragLayer.regDLink && regDragLayer.regDLink.targetDoc) ? ~&"15094524446771853950&~ : ~&"4439251559583128748&~
+					}
+					~&254494525842443467&~ {
+						~&5972374&~: regBoxMouse
+						~&233721384511543&~.~&6503816592&~: ~&7083038346995&~
+						preventStealing: ~&6504329801&~
+						property ~&6504243117&~ regPx: 0
+						property ~&6504243117&~ regPy: 0
+						~&254542253295368380&~: {
+							regBoxMouse.regPx = regDragBox.~&180993&~ + regBoxMouse.~&7082937666442&~ - ~&6504254477&~.regDragDX;
+							regBoxMouse.regPy = regDragBox.~&180994&~ + regBoxMouse.~&7082937666443&~ - ~&6504254477&~.regDragDY;
+						}
+						~&12756630929064311461&~: {
+							~&6504254477&~.regDragDX = (regDragBox.~&180993&~ + regBoxMouse.~&7082937666442&~) - regBoxMouse.regPx;
+							~&6504254477&~.regDragDY = (regDragBox.~&180994&~ + regBoxMouse.~&7082937666443&~) - regBoxMouse.regPy;
+						}
+						~&8399894427451672267&~: { }
+						~&254542236275632405&~: { }
+					}
+				}
+			}
+		}
+	}
+	END TRAVERSE
+	TRAVERSE ?#[[18399528329672988301]]
+	LOCATE AFTER ALL
+	INSERT {
+		onRegLinkAdd: {
+			~&197102514&~ ~&180987&~ = ~&18399528329672988301&~.~&12811276051795634507&~;
+			~&6504254477&~.regPendingBx = ~&180987&~.~&180993&~;
+			~&6504254477&~.regPendingBy = ~&180987&~.~&180994&~;
+			~&6504254477&~.regPendingBw = ~&180987&~.~&214646099849&~;
+			~&6504254477&~.regPendingBh = ~&180987&~.~&7082729686082&~;
+			~&6504254477&~.regArmLink(~&180987&~.~&180993&~ + ~&180987&~.~&214646099849&~, ~&180987&~.~&180994&~ + ~&180987&~.~&7082729686082&~ / 2);
+		}
+		onRegLinkAddCross: {
+			~&197102514&~ ~&180987&~ = ~&18399528329672988301&~.~&12811276051795634507&~;
+			~&6504254477&~.regArmLinkCross(~&180987&~.~&180993&~ + ~&180987&~.~&214646099849&~, ~&180987&~.~&180994&~ + ~&180987&~.~&7082729686082&~ / 2, "", ~&180987&~.~&180993&~, ~&180987&~.~&180994&~, ~&180987&~.~&214646099849&~, ~&180987&~.~&7082729686082&~);
+		}
+		onRegSelTransform: (~&180989&~) => ~&6504254477&~.regApplySelTransform(~&180989&~)
+		~&428051690305612204&~ {
+			~&7083194890448&~: ~&18399528329672988301&~
+			function ~&8232046325088609587&~() {
+				~&5972376&~ (~&18399528329672988301&~.~&7712938630327660&~) {
+					~&5972376&~ (regMoveEndTimer.~&233743626668842&~) {
+						regMoveEndTimer.~&6504295855&~();
+						~&197102514&~ rf = ~&18399528329672988301&~.~&12811276051795634507&~;
+						~&6504254477&~.regApplyStrokeMove(~&6504254477&~.regMoveStartX, ~&6504254477&~.regMoveStartY, ~&6504254477&~.regMoveStartW, ~&6504254477&~.regMoveStartH, rf.~&180993&~, rf.~&180994&~, rf.~&214646099849&~, rf.~&7082729686082&~);
+					}
+					~&6504254477&~.regEndLiveDrag();
+					~&197102514&~ rs = ~&18399528329672988301&~.~&12811276051795634507&~;
+					~&6504254477&~.regMoveStartX = rs.~&180993&~;
+					~&6504254477&~.regMoveStartY = rs.~&180994&~;
+					~&6504254477&~.regMoveStartW = rs.~&214646099849&~;
+					~&6504254477&~.regMoveStartH = rs.~&7082729686082&~;
+					~&6504254477&~.regMoveArmed = ~&6504329801&~;
+				} ~&6503784146&~ ~&5972376&~ (~&6504254477&~.regMoveArmed) {
+					regMoveEndTimer.~&233743006639214&~();
+				}
+			}
+		}
+		~&428051690305612204&~ {
+			~&7083194890448&~: ~&18399528329672988301&~
+			function ~&17653531948217489795&~() {
+				~&5972376&~ (!~&6504254477&~.regMoveArmed) ~&7083121450889&~;
+				~&197102514&~ sp = ~&6504254477&~.~&505871454011417333&~(~&18399528329672988301&~.~&15797575958307779900&~);
+				~&5972376&~ (!~&6504254477&~.regDragStartSet) {
+					~&6504254477&~.regDragSceneX0 = sp.~&180993&~;
+					~&6504254477&~.regDragSceneY0 = sp.~&180994&~;
+					~&6504254477&~.regDragStartSet = ~&6504329801&~;
+					~&7083121450889&~;
+				}
+				~&6504254477&~.regLiveDX = sp.~&180993&~ - ~&6504254477&~.regDragSceneX0;
+				~&6504254477&~.regLiveDY = sp.~&180994&~ - ~&6504254477&~.regDragSceneY0;
+			}
+		}
+		~&214604601930&~ {
+			~&5972374&~: regMoveEndTimer
+			~&7713147298280334&~: 120
+			~&7083121289162&~: ~&214625660372&~
+			~&495358363329399331&~: {
+				~&6504254477&~.regMoveArmed = ~&214625660372&~;
+				~&197102514&~ re = ~&18399528329672988301&~.~&12811276051795634507&~;
+				~&6504254477&~.regApplyStrokeMove(~&6504254477&~.regMoveStartX, ~&6504254477&~.regMoveStartY, ~&6504254477&~.regMoveStartW, ~&6504254477&~.regMoveStartH, re.~&180993&~, re.~&180994&~, re.~&214646099849&~, re.~&7082729686082&~);
+				~&6504254477&~.regEndLiveDrag();
+			}
+		}
+		~&6502786168&~ {
+			~&5972374&~: regMoveDestructionGuard
+			~&254480451320573660&~.~&4464585548018432538&~: {
+				~&5972376&~ (~&6504254477&~.regMoveArmed) {
+					~&6504254477&~.regMoveArmed = ~&214625660372&~;
+					~&197102514&~ rd = ~&18399528329672988301&~.~&12811276051795634507&~;
+					~&6504254477&~.regApplyStrokeMove(~&6504254477&~.regMoveStartX, ~&6504254477&~.regMoveStartY, ~&6504254477&~.regMoveStartW, ~&6504254477&~.regMoveStartH, rd.~&180993&~, rd.~&180994&~, rd.~&214646099849&~, rd.~&7082729686082&~);
+					~&6504254477&~.regEndLiveDrag();
+				}
+			}
+		}
+	}
+	END TRAVERSE
+END AFFECT
+AFFECT [[3197972396468700595]]
+	TRAVERSE ?#[[10742505294233322867]]
+	LOCATE BEFORE [[197082485]]
+	INSERT {
+		signal regLinkAdd
+		signal regLinkAddCross
+		signal regSelTransform(~&197102514&~ ~&180989&~)
+		property ~&6503679477&~ regSelBusy: ~&10742505294233322867&~.regManipulating && !~&10742505294233322867&~.~&7712938630327660&~
+		property ~&6503679477&~ regSelRotating: ~&2945550926577198021&~.~&233740915843711&~
+		property ~&6504243117&~ regSelRot: ~&254547531013851119&~.~&7713532151049593&~ - ~&10742505294233322867&~.regRestRot
+		property ~&6504243117&~ regSelX: ~&254547531013851119&~.~&180993&~
+		property ~&6504243117&~ regSelY: ~&254547531013851119&~.~&180994&~
+		property ~&6504243117&~ regSelW: ~&254547531013851119&~.~&214646099849&~
+		property ~&6504243117&~ regSelH: ~&254547531013851119&~.~&7082729686082&~
+		property ~&6504243117&~ regRestRot: 0
+		property ~&6504243117&~ regRestX: 0
+		property ~&6504243117&~ regRestY: 0
+		property ~&6504243117&~ regRestW: 0
+		property ~&6504243117&~ regRestH: 0
+		property ~&6503679477&~ regManipulating: ~&214625660372&~
+		onControlsAreVisibleChanged: {
+			~&5972376&~ (!~&9041481390561923875&~ && ~&10742505294233322867&~.~&233748328658231&~) {
+				~&10742505294233322867&~.regRestX = ~&254547531013851119&~.~&180993&~;
+				~&10742505294233322867&~.regRestY = ~&254547531013851119&~.~&180994&~;
+				~&10742505294233322867&~.regRestW = ~&254547531013851119&~.~&214646099849&~;
+				~&10742505294233322867&~.regRestH = ~&254547531013851119&~.~&7082729686082&~;
+				~&10742505294233322867&~.regRestRot = ~&254547531013851119&~.~&7713532151049593&~;
+				~&10742505294233322867&~.regManipulating = !~&10742505294233322867&~.~&7712938630327660&~;
+			} ~&6503784146&~ ~&5972376&~ (~&9041481390561923875&~ && ~&10742505294233322867&~.regManipulating) {
+				~&10742505294233322867&~.regManipulating = ~&214625660372&~;
+				~&197102514&~ dRot = ~&254547531013851119&~.~&7713532151049593&~ - ~&10742505294233322867&~.regRestRot;
+				~&5972376&~ (dRot === 0 && ~&6502909715&~.~&197079679&~(~&254547531013851119&~.~&214646099849&~ - ~&10742505294233322867&~.regRestW) < 2 && ~&6502909715&~.~&197079679&~(~&254547531013851119&~.~&7082729686082&~ - ~&10742505294233322867&~.regRestH) < 2)
+					~&7083121450889&~;
+				~&10742505294233322867&~.regSelTransform({
+					~&5972818&~: ~&254547531013851119&~.~&180993&~, ~&5972851&~: ~&254547531013851119&~.~&180994&~, w1: ~&254547531013851119&~.~&214646099849&~, h1: ~&254547531013851119&~.~&7082729686082&~,
+					rot: dRot, ~&5972196&~: ~&254547531013851119&~.~&180993&~ + ~&254547531013851119&~.~&214646099849&~ / 2, ~&5972197&~: ~&254547531013851119&~.~&180994&~ + ~&254547531013851119&~.~&7082729686082&~ / 2,
+					crx: ~&12811276051795634507&~.~&180993&~, cry: ~&12811276051795634507&~.~&180994&~, crw: ~&12811276051795634507&~.~&214646099849&~, crh: ~&12811276051795634507&~.~&7082729686082&~
+				});
+			}
+		}
+	}
+	END TRAVERSE
+	TRAVERSE ?#[[214642769434]]
+		LOCATE BEFORE [[425121728314878811.16765000136167945189.7081261925573]]#[[3012293087768835154]]
+		INSERT {
+			~&425121728314878811&~.~&16765000136167945189&~.~&7081261925573&~ {
+				~&5972374&~: regLinkAddBtn
+				~&481641799955318521&~: ~&5971598&~.~&233696851602406&~
+				~&6504337259&~: ~&214642769434&~.~&6504337259&~
+				~&8399601734642709923&~: ~&"4439251559583128748&~
+				~&254542236275632405&~: ~&10742505294233322867&~.regLinkAdd()
+			}
+			~&425121728314878811&~.~&16765000136167945189&~.~&7081261925573&~ {
+				~&5972374&~: regLinkAddCrossBtn
+				~&481641799955318521&~: ~&5971598&~.~&233696851602406&~
+				~&6504337259&~: ~&214642769434&~.~&6504337259&~
+				~&8399601734642709923&~: ~&"15094524446771853950&~
+				~&254542236275632405&~: ~&10742505294233322867&~.regLinkAddCross()
+			}
+		}
+	END TRAVERSE
+END AFFECT
+AFFECT [[8850026134298937527]]
+	TRAVERSE [[8397993708429497603]]
+	LOCATE BEFORE ALL
+	INSERT {
+		property ~&6503679477&~ regLinkPickMode: ~&214625660372&~
+		property ~&197088788&~ regOverviewClosed: 0
+		property ~&197102514&~ regCrossPick: ~&6504117156&~
+		property ~&197102514&~ regCrossPending: ~&6504117156&~
+		property ~&197102514&~ regCrossJump: ~&6504117156&~
+		property ~&197102514&~ regCrossError: ~&6504117156&~
+		property ~&197088788&~ regCrossCancel: 0
+	}
+	LOCATE AFTER [[1046376476496319351]]#[[18307259815317701968]]
+	INSERT {
+		~&1046376476496319351&~ {
+			~&5972374&~: regCrossPickHeader
+			~&233748328658231&~: ~&254540341572282132&~.regCrossPick !== ~&6504117156&~ && ~&254540341572282132&~.regCrossPick.phase === "browse"
+			~&214646099849&~: ~&7083038346995&~.~&214646099849&~
+			~&214642559243&~: ~&6504222003&~("Select a document to link")
+			~&8561446866773398043&~: {
+				~&197102514&~ ~&180985&~ = ~&254540341572282132&~.regCrossPick;
+				~&254540341572282132&~.regCrossPick = ~&6504117156&~;
+				try { ~&5972376&~ (~&180985&~ && ~&180985&~.srcDocId) { ~&197102514&~ ~&180974&~ = ~&233694067165438&~.~&8399431778896295215&~(~&180985&~.srcDocId); ~&5972376&~ (~&180974&~) ~&254540341572282132&~.~&9497240032101537789&~(~&180974&~, ~&180985&~.srcPageNum - 1); } }
+				catch (err) {  }
+			}
+		}
+	}
+	END TRAVERSE
+END AFFECT
+AFFECT [[4530443761526121003]]
+	TRAVERSE [[8397788359424131273]]
+	LOCATE AFTER ALL
+	INSERT {
+		~&425121728314878811&~.~&254477135848310940&~ {
+			~&5972374&~: regLinkPickHeader
+			~&233748328658231&~: ~&254540341572282132&~.regLinkPickMode || (~&254540341572282132&~.regCrossPick !== ~&6504117156&~ && ~&254540341572282132&~.regCrossPick.phase === ~&"6504167078&~)
+			~&214646099849&~: ~&7083038346995&~.~&214646099849&~
+			~&180995&~: 50
+			~&214642559243&~: "Tap a page to link"
+			~&15212200941981406061&~: [
+				~&425121728314878811&~.~&254477135848310940&~.~&7081261925573&~ {
+					~&6504315758&~: ~&6504222003&~(~&"7081277108079&~)
+					~&254542236275632405&~: { ~&5972376&~ (~&254540341572282132&~.regCrossPick !== ~&6504117156&~) ~&254540341572282132&~.regCrossCancel = ~&254540341572282132&~.regCrossCancel + 1; ~&6503784146&~ ~&254540341572282132&~.regLinkPickMode = ~&214625660372&~; }
+				},
+				~&6502786168&~ { ~&7081629735527&~.~&254529418434902000&~: ~&6504329801&~ },
+				~&425121728314878811&~.~&254477135848310940&~.~&7081261925573&~ {
+					~&8399601734642709923&~: ~&"15094524446771854124&~
+					~&254542236275632405&~: ~&13155146558357480555&~.~&7082453764421&~ = !~&13155146558357480555&~.~&7082453764421&~
+				}
+			]
+		}
+		~&428051690305612204&~ {
+			~&7083194890448&~: ~&254540341572282132&~
+			onRegLinkPickModeChanged: {
+				~&5972376&~ (~&254540341572282132&~.regLinkPickMode) ~&13155146558357480555&~.~&7082453764421&~ = ~&214625660372&~;
+			}
+		}
+		~&428051690305612204&~ {
+			~&7083194890448&~: ~&214637513689&~
+			function ~&13733777459642361598&~() {
+				~&5972376&~ (!~&214637513689&~.~&233748328658231&~ && (~&254540341572282132&~.regLinkPickMode || (~&254540341572282132&~.regCrossPick !== ~&6504117156&~ && ~&254540341572282132&~.regCrossPick.phase === ~&"6504167078&~)))
+					~&254540341572282132&~.regOverviewClosed = ~&254540341572282132&~.regOverviewClosed + 1;
+			}
+		}
+	}
+	END TRAVERSE
+END AFFECT

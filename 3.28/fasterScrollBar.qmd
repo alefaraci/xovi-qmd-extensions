@@ -1,0 +1,13 @@
+; Alessio Faraci (https://github.com/alefaraci)
+; SPDX-License-Identifier: GPL-3.0-only
+; Modified: 2026-06-18
+;
+; Requires: https://github.com/asivery/rm-xovi-extensions
+
+AFFECT [[11826530258447315599]]
+	TRAVERSE ?#[[997732844086923854]]
+		REPLACE [[7713147298280334]] WITH {
+			~&7713147298280334&~: 350
+		}
+	END TRAVERSE
+END AFFECT
