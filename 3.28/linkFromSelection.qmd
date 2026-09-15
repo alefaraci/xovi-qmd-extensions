@@ -1,7 +1,7 @@
 ; Alessio Faraci (https://github.com/alefaraci)
 ; Selection-menu button recipe from rmitchellscott's tocFromSelection.qmd; cross-doc + .rm-storage patterns from betterToc (GPL-3.0-only): https://github.com/rmitchellscott/xovi-qmd-extensions
 ; SPDX-License-Identifier: GPL-3.0-only
-; Modified: 2026-07-09
+; Modified: 2026-09-15
 ;
 ; Requires: https://github.com/asivery/rm-xovi-extensions
 
@@ -64,7 +64,9 @@ AFFECT [[11806562588218124596]]
 		property ~&197088788&~ regUndoLagMs: 7
 
 		function regDocId() {
-			~&7083121450889&~ (~&6504254477&~.~&7712934851008712&~ && ~&6504254477&~.~&7712934851008712&~.~&5972374&~) ? ~&6504254477&~.~&7712934851008712&~.~&5972374&~ : "";
+			/* 3.28: Document.id is an EntityId object, not a string. It prints as the uuid but is !== the same*/
+			/* uuid string and serialises to an empty object, which dropped every cross-doc link on return. Normalise here.*/
+			~&7083121450889&~ (~&6504254477&~.~&7712934851008712&~ && ~&6504254477&~.~&7712934851008712&~.~&5972374&~) ? String(~&6504254477&~.~&7712934851008712&~.~&5972374&~) : "";
 		}
 		function regFilePath() {
 			~&197102514&~ ~&5972374&~ = regDocId();
